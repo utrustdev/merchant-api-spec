@@ -1,0 +1,16 @@
+post:
+  tags:
+    - "order"
+  summary: "Create an order"
+  description: "Create a new order for payment processing. Returns a url to a page where a buyer can fulfill the payment for that order."
+  operationId: "createOrder"
+  parameters:
+    - in: "body"
+      name: "order"
+      description: "Information about the order and payment"
+      required: true
+      schema:
+        $ref: "#/definitions/Order"
+  responses:
+    201:
+      description: "Order created"

@@ -1,0 +1,34 @@
+type: "object"
+properties:
+  reference:
+    type: "string"
+    example: "order-1"
+  currency:
+    type: "string"
+    example: "EUR"
+  total:
+    type: "integer"
+    format: "int32"
+    minimum: 0
+    example: 100
+  return_url:
+    type: "string"
+    format: "url"
+  line_items:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        sku:
+          type: "string"
+        name:
+          type: "string"
+        price:
+          type: "integer"
+          example: 100
+        currency:
+          type: "string"
+        quantity:
+          type: "integer"
+          minimum: 1
+          example: 1
