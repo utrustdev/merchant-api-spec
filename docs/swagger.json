@@ -1,0 +1,127 @@
+{
+  "swagger": "2.0",
+  "schemes": [
+    "https"
+  ],
+  "host": "utrust.com",
+  "basePath": "/api",
+  "info": {
+    "description": "JSON HTTP API for Merchants with an UTRUST user account.",
+    "version": "1.0.0",
+    "title": "UTRUST Merchant API",
+    "contact": {
+      "email": "apiteam@utrust.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "x-logo": {
+      "url": "https://s2.coinmarketcap.com/static/img/coins/200x200/2320.png"
+    }
+  },
+  "externalDocs": {
+    "description": "Check out the repo",
+    "url": "https://github.com/utrustdev/merchant-api-spec"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "tags": [
+    {
+      "name": "order"
+    }
+  ],
+  "securityDefinitions": {
+    "api_key": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "api_key"
+    },
+    "basic_auth": {
+      "type": "basic"
+    }
+  },
+  "paths": {
+    "/orders": {
+      "post": {
+        "tags": [
+          "order"
+        ],
+        "summary": "Create an order",
+        "description": "Create a new order for payment processing. Returns a url to a page where a buyer can fulfill the payment for that order.",
+        "operationId": "createOrder",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "order",
+            "description": "Information about the order and payment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Order created"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Order": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "example": "order-1"
+        },
+        "currency": {
+          "type": "string",
+          "example": "EUR"
+        },
+        "total": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "example": 100
+        },
+        "return_url": {
+          "type": "string",
+          "format": "url"
+        },
+        "line_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "sku": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "price": {
+                "type": "integer",
+                "example": 100
+              },
+              "currency": {
+                "type": "string"
+              },
+              "quantity": {
+                "type": "integer",
+                "minimum": 1,
+                "example": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
