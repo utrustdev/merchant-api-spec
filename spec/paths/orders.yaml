@@ -7,10 +7,21 @@ post:
   parameters:
     - in: "body"
       name: "order"
-      description: "Information about the order and payment"
+      description: "The order information"
       required: true
       schema:
-        $ref: "#/definitions/Order"
+        type: "object"
+        properties:
+          order:
+            $ref: "#/definitions/Order"
+          payment:
+            type: "object"
+            properties:
+              currency:
+                type: "string"
+                example: "UTK"
+          customer:
+            $ref: "#/definitions/Customer"
   responses:
     201:
       description: "Order created"

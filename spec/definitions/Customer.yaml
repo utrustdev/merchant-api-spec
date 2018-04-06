@@ -1,0 +1,30 @@
+type: "object"
+properties:
+  first_name:
+    type: "string"
+    example: "John"
+  last_name:
+    type: "string"
+    example: "Doe"
+  email:
+    type: "string"
+    format: "email"
+    example: "john@example.com"
+  address1:
+    type: "string"
+    example: "118 Main St"
+  address2:
+    type: "string"
+    example: "7th Floor"
+  city:
+    type: "string"
+    example: "New York"
+  state:
+    type: "string"
+    example: "New York"
+  postcode:
+    type: "string"
+    example: "10001"
+  country:
+    type: "string"
+    example: "US"
