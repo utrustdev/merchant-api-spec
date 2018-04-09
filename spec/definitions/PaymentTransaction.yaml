@@ -1,0 +1,13 @@
+type: "object"
+properties:
+  payee:
+    type: "string"
+    enum: ["merchant"]
+    example: "merchant"
+  amount:
+    $ref: "#/definitions/Amount"
+  partner_fee_details:
+    $ref: "#/definitions/PartnerFeeDetails"
+  description:
+    type: "string"
+    example: "The payment transaction description."

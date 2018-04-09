@@ -1,0 +1,20 @@
+type: "object"
+properties:
+  total:
+    type: "string"
+    format: "decimal"
+    example: "40.00"
+  currency:
+    type: "string"
+    example: "USD"
+  details:
+    type: "object"
+    properties:
+      subtotal:
+        type: "string"
+        format: "decimal"
+        example: "39.00"
+      handling_fee:
+        type: "string"
+        format: "decimal"
+        example: "1.00"

@@ -11,9 +11,17 @@ properties:
     format: "int32"
     minimum: 0
     example: 100
-  return_url:
-    type: "string"
-    format: "url"
+  return_urls:
+    type: "object"
+    properties:
+      return_url:
+        type: "string"
+        format: "url"
+        example: "http://example.com/return"
+      cancel_url:
+        type: "string"
+        format: "url"
+        example: "http://example.com/cancel"
   line_items:
     type: "array"
     items:

@@ -5,4 +5,5 @@ properties:
     properties:
       detail:
         type: "string"
-        description: "Details of the error"
+        description: "Human readable explanation of the problem"
+        example: "Explanation of the problem"
