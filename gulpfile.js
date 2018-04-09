@@ -8,7 +8,7 @@ var exec = require('child_process').exec;
 var portfinder = require('portfinder');
 var swaggerRepo = require('swagger-repo');
 
-var DIST_DIR = 'web_deploy';
+var DIST_DIR = 'docs';
 
 gulp.task('serve', ['build', 'watch', 'edit'], function() {
   portfinder.getPort({port: 3000}, function (err, port) {

@@ -1,13 +1,13 @@
 post:
   tags:
-    - "Order"
-  summary: "Create an order"
+    - "Payment"
+  summary: "Create a payment"
   description: "Create a new order for payment processing. Returns a url to a page where a buyer can fulfill the payment for that order."
-  operationId: "createOrder"
+  operationId: "createPayment"
   parameters:
     - in: "body"
-      name: "order"
-      description: "The order information"
+      name: "payment"
+      description: "The payment information"
       required: true
       schema:
         type: "object"

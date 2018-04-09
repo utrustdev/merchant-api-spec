@@ -1,0 +1,36 @@
+post:
+  tags:
+    - "Session"
+  summary: "Generate a valid token for this session"
+  description: |
+    Use your email and password to generate a JWT that you will
+    need to perform any authenticated request on the API
+  operationId: "generateToken"
+  parameters:
+    - in: "body"
+      name: "credentials"
+      description: "Your UTRUST credentials"
+      schema:
+        type: "object"
+        properties:
+          email:
+            type: "string"
+            format: "email"
+            example: "john@example.com"
+          password:
+            type: "string"
+            format: "password"
+            example: "password"
+
+  responses:
+    200:
+      schema:
+        type: "object"
+        properties:
+          token:
+            type: "string"
+            format: "JWT"
+
+    401:
+      schema:
+        $ref: "#/definitions/Error"

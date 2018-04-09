@@ -6,7 +6,7 @@
   "host": "utrust.com",
   "basePath": "/api",
   "info": {
-    "description": "JSON HTTP API for Merchants with an UTRUST user account.",
+    "description": "JSON HTTP API for Merchants with an UTRUST store account\n\n# Authentication\n\nUTRUST offers JSON Web Tokens (JWT) authentication.  We call our resource\nfor generating JWT [Sessions](#tag/Session).\n",
     "version": "1.0.0",
     "title": "UTRUST Merchant API",
     "contact": {
@@ -32,24 +32,51 @@
   ],
   "tags": [
     {
-      "name": "order"
+      "name": "Order"
+    },
+    {
+      "name": "Session"
+    },
+    {
+      "name": "Payment"
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "Orders API",
+      "tags": [
+        "Order"
+      ]
+    },
+    {
+      "name": "Payments API",
+      "tags": [
+        "Payment"
+      ]
+    },
+    {
+      "name": "Authentication API",
+      "tags": [
+        "Session"
+      ]
     }
   ],
   "securityDefinitions": {
-    "api_key": {
-      "type": "apiKey",
-      "in": "header",
-      "name": "api_key"
-    },
-    "basic_auth": {
+    "JWT": {
+      "description": "You can create a JSON Web Token (JWT) via our Sessions resource",
       "type": "basic"
     }
   },
+  "security": [
+    {
+      "JWT": []
+    }
+  ],
   "paths": {
     "/orders": {
       "post": {
         "tags": [
-          "order"
+          "Order"
         ],
         "summary": "Create an order",
         "description": "Create a new order for payment processing. Returns a url to a page where a buyer can fulfill the payment for that order.",
@@ -85,6 +112,99 @@
         "responses": {
           "201": {
             "description": "Order created"
+          }
+        }
+      }
+    },
+    "/payments": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Create a payment",
+        "description": "Create a new order for payment processing. Returns a url to a page where a buyer can fulfill the payment for that order.",
+        "operationId": "createPayment",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "payment",
+            "description": "The payment information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "order": {
+                  "$ref": "#/definitions/Order"
+                },
+                "payment": {
+                  "type": "object",
+                  "properties": {
+                    "currency": {
+                      "type": "string",
+                      "example": "UTK"
+                    }
+                  }
+                },
+                "customer": {
+                  "$ref": "#/definitions/Customer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Order created"
+          }
+        }
+      }
+    },
+    "/sessions": {
+      "post": {
+        "tags": [
+          "Session"
+        ],
+        "summary": "Generate a valid token for this session",
+        "description": "Use your email and password to generate a JWT that you will\nneed to perform any authenticated request on the API\n",
+        "operationId": "generateToken",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "credentials",
+            "description": "Your UTRUST credentials",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "example": "john@example.com"
+                },
+                "password": {
+                  "type": "string",
+                  "format": "password",
+                  "example": "password"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "format": "JWT"
+                }
+              }
+            }
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -130,6 +250,20 @@
         "country": {
           "type": "string",
           "example": "US"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "object",
+          "properties": {
+            "detail": {
+              "type": "string",
+              "description": "Details of the error"
+            }
+          }
         }
       }
     },

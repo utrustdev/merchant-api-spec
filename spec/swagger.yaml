@@ -4,7 +4,13 @@ schemes:
 host: utrust.com
 basePath: /api
 info:
-  description: "JSON HTTP API for Merchants with an UTRUST user account."
+  description: |
+    JSON HTTP API for Merchants with an UTRUST store account
+
+    # Authentication
+
+    UTRUST offers JSON Web Tokens (JWT) authentication.  We call our resource
+    for generating JWT [Sessions](#tag/Session).
   version: "1.0.0"
   title: "UTRUST Merchant API"
   contact:
@@ -23,13 +29,25 @@ consumes:
   - application/json
 
 tags:
-  - name: "order"
+  - name: "Order"
+  - name: "Session"
+  - name: "Payment"
+
+x-tagGroups:
+  - name: Orders API
+    tags:
+      - Order
+  - name: Payments API
+    tags:
+      - Payment
+  - name: Authentication API
+    tags:
+      - Session
 
 securityDefinitions:
-  api_key: # security definition name (you can name it as you want)
-    type: apiKey
-    # The following options are specific to apiKey type
-    in: header # Where API key will be passed: header or query
-    name: api_key # API key paramteer name
-  basic_auth: # security definition name (you can name it as you want)
+  JWT:
+    description: "You can create a JSON Web Token (JWT) via our Sessions resource"
     type: basic
+
+security:
+  - JWT: []
