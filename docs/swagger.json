@@ -183,7 +183,7 @@
           "Session"
         ],
         "summary": "Generate a valid token for this session",
-        "description": "Use your email and password to generate a JWT that you will\nneed to perform any authenticated request on the API\n",
+        "description": "Use your credentials to generate a JWT that you will\nneed to perform any authenticated request on the API\n",
         "operationId": "generateToken",
         "parameters": [
           {
@@ -194,15 +194,11 @@
             "schema": {
               "type": "object",
               "properties": {
-                "email": {
-                  "type": "string",
-                  "format": "email",
-                  "example": "john@example.com"
+                "client_id": {
+                  "type": "string"
                 },
-                "password": {
-                  "type": "string",
-                  "format": "password",
-                  "example": "password"
+                "client_secret": {
+                  "type": "string"
                 }
               }
             }
@@ -346,7 +342,8 @@
           "example": 100
         },
         "currency": {
-          "type": "string"
+          "type": "string",
+          "example": "USD"
         },
         "quantity": {
           "type": "integer",

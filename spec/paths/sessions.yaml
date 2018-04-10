@@ -3,7 +3,7 @@ post:
     - "Session"
   summary: "Generate a valid token for this session"
   description: |
-    Use your email and password to generate a JWT that you will
+    Use your credentials to generate a JWT that you will
     need to perform any authenticated request on the API
   operationId: "generateToken"
   parameters:
@@ -14,14 +14,10 @@ post:
       schema:
         type: "object"
         properties:
-          email:
+          client_id:
             type: "string"
-            format: "email"
-            example: "john@example.com"
-          password:
+          client_secret:
             type: "string"
-            format: "password"
-            example: "password"
 
   responses:
     200:
