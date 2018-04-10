@@ -84,11 +84,12 @@ paths:
       description: List payments that were created after an order has been fullfilled. This list shows the payments that are made to the merchant who makes the call.
       operationId: listPayments
       parameters:
-        - in: path
+        - in: query
           name: count
           type: integer
           maximum: 20
           default: 10
+          required: true
       responses:
         '200':
           description: List of payments for merchant
@@ -106,7 +107,7 @@ paths:
           name: payment_id
           type: string
           format: UUID
-          example: c8d65cc2-0c82-429a-95ea-3f65011fc2cc
+          required: true
       responses:
         '200':
           description: Payment details
@@ -182,6 +183,7 @@ definitions:
       value:
         type: string
         format: decimal
+        example: '40.00'
       currency:
         type: string
         example: USD
@@ -226,6 +228,22 @@ definitions:
             type: string
             description: Human readable explanation of the problem
             example: Explanation of the problem
+  LineItem:
+    type: object
+    properties:
+      sku:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+        example: 100
+      currency:
+        type: string
+      quantity:
+        type: integer
+        minimum: 1
+        example: 1
   Order:
     type: object
     properties:
@@ -237,7 +255,6 @@ definitions:
         example: EUR
       total:
         type: integer
-        format: int32
         minimum: 0
         example: 100
       return_urls:
@@ -254,21 +271,7 @@ definitions:
       line_items:
         type: array
         items:
-          type: object
-          properties:
-            sku:
-              type: string
-            name:
-              type: string
-            price:
-              type: integer
-              example: 100
-            currency:
-              type: string
-            quantity:
-              type: integer
-              minimum: 1
-              example: 1
+          $ref: '#/definitions/LineItem'
   PartnerFeeDetails:
     type: object
     properties:
@@ -291,17 +294,24 @@ definitions:
     type: object
     properties:
       id:
-        $ref: '#/definitions/UUID'
+        allOf:
+          - $ref: '#/definitions/UUID'
       state:
         type: string
         enum:
           - confirmed
           - rejected
           - expired
-      order_number:
-        schema:
-          $ref: '#/definitions/UUID'
-        example: 14d26368-d9ce-47e1-8a47-f533d3b59abe
+      source:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - order
+          id:
+            allOf:
+              - $ref: '#/definitions/UUID'
       payer:
         type: object
         properties:
@@ -311,39 +321,12 @@ definitions:
               - utrust
               - blockchain
       total_amount:
-        $ref: '#/definitions/Currency'
+        allOf:
+          - $ref: '#/definitions/Currency'
       transactions:
         type: array
         items:
-          schema:
-            $ref: '#/definitions/PaymentTransaction'
-          example:
-            - payee: merchant
-              amount:
-                total: '40.00'
-                currency: USD
-                details:
-                  subtotal: '39.00'
-                  handling_fee: '1.00'
-              partner_fee_details:
-                receiver: utrust
-                amount:
-                  total: '0.40'
-                  currency: USD
-              description: The payment transaction description
-            - payee: merchant
-              amount:
-                total: '50.00'
-                currency: USD
-                details:
-                  subtotal: '45.00'
-                  handling_fee: '5.00'
-              partner_fee_details:
-                receiver: utrust
-                amount:
-                  total: '0.45'
-                  currency: USD
-              description: The payment transaction description
+          $ref: '#/definitions/PaymentTransaction'
   Payments:
     type: array
     items:

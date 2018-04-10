@@ -3,6 +3,7 @@ properties:
   value:
     type: "string"
     format: "decimal"
+    example: "40.00"
   currency:
     type: "string"
     example: "USD"

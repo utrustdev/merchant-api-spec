@@ -1,0 +1,16 @@
+type: "object"
+properties:
+  sku:
+    type: "string"
+  name:
+    type: "string"
+  price:
+    type: "integer"
+    example: 100
+  currency:
+    type: "string"
+    example: "USD"
+  quantity:
+    type: "integer"
+    minimum: 1
+    example: 1

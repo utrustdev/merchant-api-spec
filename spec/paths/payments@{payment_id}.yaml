@@ -1,23 +1,21 @@
 get:
   tags:
-    - "Payment"
-  summary: "Show payment details"
-  description: "Show details for a payment by ID"
-  operationId: "showPaymentDetails"
+    - Payment
+  summary: Show payment details
+  description: Show details for a payment by ID
+  operationId: showPaymentDetails
   parameters:
-    - in: "path"
-      name: "payment_id"
-      type: "string"
-      format: "UUID"
-      example: "c8d65cc2-0c82-429a-95ea-3f65011fc2cc"
-
+    - in: path
+      name: payment_id
+      type: string
+      format: UUID
+      required: true
   responses:
-    200:
-      description: "Payment details"
+    '200':
+      description: Payment details
       schema:
-        $ref: "#/definitions/Payment"
-
-    404:
-      description: "Payment not found"
+        $ref: '#/definitions/Payment'
+    '404':
+      description: Payment not found
       schema:
-        $ref: "#/definitions/Error"
+        $ref: '#/definitions/Error'
