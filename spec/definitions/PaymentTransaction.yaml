@@ -4,10 +4,22 @@ properties:
     type: "string"
     enum: ["merchant"]
     example: "merchant"
-  amount:
+  received_amount:
     $ref: "#/definitions/Amount"
+  paid_amount:
+    allOf:
+      - $ref: "#/definitions/Amount"
+    example:
+      total: "0.094377463"
+      currency: "ETH"
+      details:
+        subtotal: "0.092018026"
+        handling_fee: "0.002359437"
   partner_fee_details:
     $ref: "#/definitions/PartnerFeeDetails"
+  exchange_rate:
+    type: "string"
+    example: "423.83000000"
   description:
     type: "string"
     example: "The payment transaction description."

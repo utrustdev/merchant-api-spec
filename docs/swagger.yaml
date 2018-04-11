@@ -94,7 +94,9 @@ paths:
         '200':
           description: List of payments for merchant
           schema:
-            $ref: '#/definitions/Payments'
+            type: array
+            items:
+              $ref: '#/definitions/Payment'
   '/payments/{payment_id}':
     get:
       tags:
@@ -164,6 +166,8 @@ definitions:
         example: USD
       details:
         type: object
+        description: |
+          Additional details about the amount
         properties:
           subtotal:
             type: string
@@ -247,24 +251,25 @@ definitions:
       reference:
         type: string
         example: order-1
-      currency:
-        type: string
-        example: EUR
-      total:
-        type: integer
-        minimum: 0
-        example: 100
+      amount:
+        allOf:
+          - $ref: '#/definitions/Amount'
+        example:
+          total: '100.00'
+          currency: USD
+          details:
+            subtotal: '98.00'
+            handling_fee: '2.00'
       return_urls:
         type: object
+        description: |
+          If not using the express checkout flow you can specify a URL
+          to redirect the user when the payment is done
         properties:
           return_url:
             type: string
             format: url
             example: 'http://example.com/return'
-          cancel_url:
-            type: string
-            format: url
-            example: 'http://example.com/cancel'
       line_items:
         type: array
         items:
@@ -283,51 +288,57 @@ definitions:
           total:
             type: string
             format: decimal
-            example: '0.40'
+            example: '0.000943775'
           currency:
             type: string
-            example: USD
+            example: ETH
   Payment:
     type: object
     properties:
-      id:
-        allOf:
-          - $ref: '#/definitions/UUID'
-      state:
-        type: string
-        enum:
-          - confirmed
-          - rejected
-          - expired
-      source:
+      data:
         type: object
         properties:
-          type:
-            type: string
-            enum:
-              - order
           id:
             allOf:
               - $ref: '#/definitions/UUID'
-      payer:
-        type: object
-        properties:
-          payment_method:
+          type:
             type: string
             enum:
-              - utrust
-              - blockchain
-      total_amount:
-        allOf:
-          - $ref: '#/definitions/Currency'
-      transactions:
-        type: array
-        items:
-          $ref: '#/definitions/PaymentTransaction'
-  Payments:
-    type: array
-    items:
-      $ref: '#/definitions/Payment'
+              - payments
+          attributes:
+            type: object
+            properties:
+              state:
+                type: string
+                enum:
+                  - confirmed
+                  - rejected
+                  - expired
+              source:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - order
+                  id:
+                    allOf:
+                      - $ref: '#/definitions/UUID'
+              payer:
+                type: object
+                properties:
+                  payment_method:
+                    type: string
+                    enum:
+                      - utrust
+                      - blockchain
+              total_amount:
+                allOf:
+                  - $ref: '#/definitions/Currency'
+              transactions:
+                type: array
+                items:
+                  $ref: '#/definitions/PaymentTransaction'
   PaymentTransaction:
     type: object
     properties:
@@ -336,10 +347,22 @@ definitions:
         enum:
           - merchant
         example: merchant
-      amount:
+      received_amount:
         $ref: '#/definitions/Amount'
+      paid_amount:
+        allOf:
+          - $ref: '#/definitions/Amount'
+        example:
+          total: '0.094377463'
+          currency: ETH
+          details:
+            subtotal: '0.092018026'
+            handling_fee: '0.002359437'
       partner_fee_details:
         $ref: '#/definitions/PartnerFeeDetails'
+      exchange_rate:
+        type: string
+        example: '423.83000000'
       description:
         type: string
         example: The payment transaction description.

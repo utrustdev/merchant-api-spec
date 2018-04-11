@@ -9,6 +9,8 @@ properties:
     example: "USD"
   details:
     type: "object"
+    description: |
+      Additional details about the amount
     properties:
       subtotal:
         type: "string"

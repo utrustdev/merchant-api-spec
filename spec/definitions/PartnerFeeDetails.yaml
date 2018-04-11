@@ -10,7 +10,7 @@ properties:
       total:
         type: "string"
         format: "decimal"
-        example: "0.40"
+        example: "0.000943775"
       currency:
         type: "string"
-        example: "USD"
+        example: "ETH"

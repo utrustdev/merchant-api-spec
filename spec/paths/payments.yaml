@@ -17,4 +17,6 @@ get:
     '200':
       description: List of payments for merchant
       schema:
-        $ref: '#/definitions/Payments'
+        type: "array"
+        items:
+          $ref: "#/definitions/Payment"
