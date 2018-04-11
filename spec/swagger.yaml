@@ -1,8 +1,8 @@
 swagger: "2.0"
 schemes:
   - https
-host: utrust.com
-basePath: /api
+host: api.utrust.com
+basePath: /
 info:
   description: |
     JSON HTTP API for Merchants with an UTRUST store account

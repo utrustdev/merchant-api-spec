@@ -3,8 +3,8 @@
   "schemes": [
     "https"
   ],
-  "host": "utrust.com",
-  "basePath": "/api",
+  "host": "api.utrust.com",
+  "basePath": "/",
   "info": {
     "description": "JSON HTTP API for Merchants with an UTRUST store account\n\n# Authentication\n\nUTRUST offers JSON Web Tokens (JWT) authentication.  We call our resource\nfor generating JWT [Sessions](#tag/Session).\n",
     "version": "1.0.0",
