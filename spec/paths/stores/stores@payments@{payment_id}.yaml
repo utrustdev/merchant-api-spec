@@ -1,6 +1,6 @@
 get:
   tags:
-    - Payment
+    - "Store Payment"
   summary: Show payment details
   description: Show details for a payment by ID
   operationId: showPaymentDetails
@@ -14,7 +14,10 @@ get:
     '200':
       description: Payment details
       schema:
-        $ref: '#/definitions/Payment'
+        type: "object"
+        properties:
+          data:
+            $ref: '#/definitions/Payment'
     '404':
       description: Payment not found
       schema:

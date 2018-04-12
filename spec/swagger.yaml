@@ -29,20 +29,16 @@ consumes:
   - application/json
 
 tags:
-  - name: "Order"
-  - name: "Session"
-  - name: "Payment"
+  - name: "Store Order"
+  - name: "Store Session"
+  - name: "Store Payment"
 
 x-tagGroups:
-  - name: Orders API
+  - name: Stores API
     tags:
-      - Order
-  - name: Payments API
-    tags:
-      - Payment
-  - name: Authentication API
-    tags:
-      - Session
+      - "Store Order"
+      - "Store Payment"
+      - "Store Session"
 
 securityDefinitions:
   JWT:

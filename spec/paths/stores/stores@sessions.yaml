@@ -1,6 +1,6 @@
 post:
   tags:
-    - "Session"
+    - "Store Session"
   summary: "Generate a valid token for this session"
   description: |
     Use your credentials to generate a JWT that you will

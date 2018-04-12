@@ -28,19 +28,15 @@ produces:
 consumes:
   - application/json
 tags:
-  - name: Order
-  - name: Session
-  - name: Payment
+  - name: Store Order
+  - name: Store Session
+  - name: Store Payment
 x-tagGroups:
-  - name: Orders API
+  - name: Stores API
     tags:
-      - Order
-  - name: Payments API
-    tags:
-      - Payment
-  - name: Authentication API
-    tags:
-      - Session
+      - Store Order
+      - Store Payment
+      - Store Session
 securityDefinitions:
   JWT:
     description: You can create a JSON Web Token (JWT) via our Sessions resource
@@ -48,10 +44,10 @@ securityDefinitions:
 security:
   - JWT: []
 paths:
-  /orders:
+  /stores/orders:
     post:
       tags:
-        - Order
+        - Store Order
       summary: Create an order
       description: Create a new order for payment processing. Returns a url to a page where a buyer can fulfill the payment for that order.
       operationId: createOrder
@@ -63,23 +59,33 @@ paths:
           schema:
             type: object
             properties:
-              order:
-                $ref: '#/definitions/Order'
-              payment:
+              data:
                 type: object
                 properties:
-                  currency:
+                  type:
                     type: string
-                    example: UTK
-              customer:
-                $ref: '#/definitions/Customer'
+                    enum:
+                      - orders
+                  attributes:
+                    type: object
+                    properties:
+                      order:
+                        $ref: '#/definitions/Order'
+                      payment:
+                        type: object
+                        properties:
+                          currency:
+                            type: string
+                            example: UTK
+                      customer:
+                        $ref: '#/definitions/Customer'
       responses:
         '201':
           description: Order created
-  /payments:
+  /stores/payments:
     get:
       tags:
-        - Payment
+        - Store Payment
       summary: List payments
       description: List payments that were created after an order has been fullfilled. This list shows the payments that are made to the merchant who makes the call.
       operationId: listPayments
@@ -94,13 +100,16 @@ paths:
         '200':
           description: List of payments for merchant
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Payment'
-  '/payments/{payment_id}':
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Payment'
+  '/stores/payments/{payment_id}':
     get:
       tags:
-        - Payment
+        - Store Payment
       summary: Show payment details
       description: Show details for a payment by ID
       operationId: showPaymentDetails
@@ -114,15 +123,18 @@ paths:
         '200':
           description: Payment details
           schema:
-            $ref: '#/definitions/Payment'
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Payment'
         '404':
           description: Payment not found
           schema:
             $ref: '#/definitions/Error'
-  /sessions:
+  /stores/sessions:
     post:
       tags:
-        - Session
+        - Store Session
       summary: Generate a valid token for this session
       description: |
         Use your credentials to generate a JWT that you will
@@ -295,50 +307,47 @@ definitions:
   Payment:
     type: object
     properties:
-      data:
+      id:
+        allOf:
+          - $ref: '#/definitions/UUID'
+      type:
+        type: string
+        enum:
+          - payments
+      attributes:
         type: object
         properties:
-          id:
-            allOf:
-              - $ref: '#/definitions/UUID'
-          type:
+          state:
             type: string
             enum:
-              - payments
-          attributes:
+              - confirmed
+              - rejected
+              - expired
+          source:
             type: object
             properties:
-              state:
+              type:
                 type: string
                 enum:
-                  - confirmed
-                  - rejected
-                  - expired
-              source:
-                type: object
-                properties:
-                  type:
-                    type: string
-                    enum:
-                      - order
-                  id:
-                    allOf:
-                      - $ref: '#/definitions/UUID'
-              payer:
-                type: object
-                properties:
-                  payment_method:
-                    type: string
-                    enum:
-                      - utrust
-                      - blockchain
-              total_amount:
+                  - order
+              id:
                 allOf:
-                  - $ref: '#/definitions/Currency'
-              transactions:
-                type: array
-                items:
-                  $ref: '#/definitions/PaymentTransaction'
+                  - $ref: '#/definitions/UUID'
+          payer:
+            type: object
+            properties:
+              payment_method:
+                type: string
+                enum:
+                  - utrust
+                  - blockchain
+          total_amount:
+            allOf:
+              - $ref: '#/definitions/Currency'
+          transactions:
+            type: array
+            items:
+              $ref: '#/definitions/PaymentTransaction'
   PaymentTransaction:
     type: object
     properties:

@@ -1,0 +1,36 @@
+post:
+  tags:
+    - "Store Order"
+  summary: "Create an order"
+  description: "Create a new order for payment processing. Returns a url to a page where a buyer can fulfill the payment for that order."
+  operationId: "createOrder"
+  parameters:
+    - in: "body"
+      name: "order"
+      description: "The order information"
+      required: true
+      schema:
+        type: "object"
+        properties:
+          data:
+            type: "object"
+            properties:
+              type:
+                type: "string"
+                enum: ["orders"]
+              attributes:
+                type: "object"
+                properties:
+                  order:
+                    $ref: "#/definitions/Order"
+                  payment:
+                    type: "object"
+                    properties:
+                      currency:
+                        type: "string"
+                        example: "UTK"
+                  customer:
+                    $ref: "#/definitions/Customer"
+  responses:
+    201:
+      description: "Order created"

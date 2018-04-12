@@ -1,39 +1,36 @@
 type: "object"
 properties:
-  data:
+  id:
+    allOf:
+      - $ref: "#/definitions/UUID"
+  type:
+    type: "string"
+    enum: ["payments"]
+  attributes:
     type: "object"
     properties:
-      id:
-        allOf:
-          - $ref: "#/definitions/UUID"
-      type:
+      state:
         type: "string"
-        enum: ["payments"]
-      attributes:
+        enum: ["confirmed", "rejected", "expired"]
+      source:
         type: "object"
         properties:
-          state:
+          type:
             type: "string"
-            enum: ["confirmed", "rejected", "expired"]
-          source:
-            type: "object"
-            properties:
-              type:
-                type: "string"
-                enum: ["order"]
-              id:
-                allOf:
-                  - $ref: "#/definitions/UUID"
-          payer:
-            type: "object"
-            properties:
-              payment_method:
-                type: "string"
-                enum: ["utrust", "blockchain"]
-          total_amount:
+            enum: ["order"]
+          id:
             allOf:
-              - $ref: "#/definitions/Currency"
-          transactions:
-            type: "array"
-            items:
-              $ref: "#/definitions/PaymentTransaction"
+              - $ref: "#/definitions/UUID"
+      payer:
+        type: "object"
+        properties:
+          payment_method:
+            type: "string"
+            enum: ["utrust", "blockchain"]
+      total_amount:
+        allOf:
+          - $ref: "#/definitions/Currency"
+      transactions:
+        type: "array"
+        items:
+          $ref: "#/definitions/PaymentTransaction"

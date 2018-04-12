@@ -1,6 +1,6 @@
 get:
   tags:
-    - Payment
+    - "Store Payment"
   summary: List payments
   description: >-
     List payments that were created after an order has been fullfilled. This
@@ -17,6 +17,9 @@ get:
     '200':
       description: List of payments for merchant
       schema:
-        type: "array"
-        items:
-          $ref: "#/definitions/Payment"
+        type: "object"
+        properties:
+          data:
+            type: "array"
+            items:
+              $ref: "#/definitions/Payment"
