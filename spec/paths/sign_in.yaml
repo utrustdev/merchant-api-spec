@@ -1,11 +1,11 @@
 post:
   tags:
-    - "Store Session"
+    - "Session"
   summary: "Generate a valid token for this session"
   description: |
     Use your credentials to generate a JWT that you will
     need to perform any authenticated request on the API
-  operationId: "generateStoreToken"
+  operationId: "generateToken"
   parameters:
     - in: "body"
       name: "credentials"
@@ -14,9 +14,10 @@ post:
       schema:
         type: "object"
         properties:
-          client_id:
+          email:
             type: "string"
-          client_secret:
+            format: "email"
+          password:
             type: "string"
 
   responses:

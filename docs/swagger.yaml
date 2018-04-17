@@ -9,8 +9,10 @@ info:
 
     # Authentication
 
-    UTRUST offers JSON Web Tokens (JWT) authentication.  We call our resource
-    for generating JWT [Sessions](#tag/Session).
+    UTRUST offers JSON Web Tokens (JWT) authentication. We call our resource
+    for generating JWT [Sessions](#tag/Session) or [Store
+    Sessions](#tag/Store-Session) for the Stores.
+    <!-- ReDoc-Inject: <security-definitions> -->
   version: 1.0.0
   title: UTRUST Merchant API
   contact:
@@ -24,26 +26,172 @@ externalDocs:
   description: Check out the repo
   url: 'https://github.com/utrustdev/merchant-api-spec'
 produces:
-  - application/json
+  - application/vnd.api+json
 consumes:
-  - application/json
+  - application/vnd.api+json
 tags:
   - name: Store Order
   - name: Store Session
   - name: Store Payment
+  - name: Session
+  - name: Account
 x-tagGroups:
   - name: Stores API
     tags:
       - Store Order
       - Store Payment
       - Store Session
+  - name: Authentication
+    tags:
+      - Session
+      - Account
+  - name: Payments
+    tags:
+      - Payment
 securityDefinitions:
   JWT:
+    type: apiKey
+    in: header
+    name: 'Authorization: Bearer <token>'
     description: You can create a JSON Web Token (JWT) via our Sessions resource
-    type: basic
 security:
   - JWT: []
 paths:
+  /payments:
+    get:
+      tags:
+        - Payment
+      summary: List payments for all the merchant's stores
+      description: List payments that were created after an order has been fullfilled. This list shows the payments that are made to the merchant who makes the call.
+      operationId: listPayments
+      parameters:
+        - in: query
+          name: count
+          type: integer
+          maximum: 20
+          default: 10
+          required: true
+      responses:
+        '200':
+          description: List of payments for merchant
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Payment'
+  '/payments/{payment_id}':
+    get:
+      tags:
+        - Payment
+      summary: Show payment details
+      description: Show details for a payment by ID
+      operationId: showPaymentDetails
+      parameters:
+        - in: path
+          name: payment_id
+          type: string
+          format: UUID
+          required: true
+      responses:
+        '200':
+          description: Payment details
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Payment'
+        '404':
+          description: Payment not found
+          schema:
+            $ref: '#/definitions/Error'
+  /sign_in:
+    post:
+      tags:
+        - Session
+      summary: Generate a valid token for this session
+      description: |
+        Use your credentials to generate a JWT that you will
+        need to perform any authenticated request on the API
+      operationId: generateToken
+      parameters:
+        - in: body
+          name: credentials
+          description: Your UTRUST credentials
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+      responses:
+        '200':
+          description: Token generated
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+                format: JWT
+        '401':
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/Error'
+  /sign_out:
+    delete:
+      tags:
+        - Session
+      summary: Revokes the token for the current session
+      operationId: revokeToken
+      responses:
+        '200':
+          description: Token revoked
+  /sign_up:
+    post:
+      tags:
+        - Account
+      summary: Creates an account
+      description: |
+        Provide details in order to create a merchant account
+      operationId: createAccount
+      parameters:
+        - in: body
+          name: credentials
+          description: Credentials you choose to be used on your account
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+      responses:
+        '200':
+          description: Account created
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  id:
+                    $ref: '#/definitions/UUID'
+                  type:
+                    type: string
+                    enum:
+                      - users
+                  attributes:
+                    type: object
+        '400':
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/Error'
   /stores/orders:
     post:
       tags:
@@ -87,7 +235,7 @@ paths:
       tags:
         - Store Payment
       summary: List payments
-      description: List payments that were created after an order has been fullfilled. This list shows the payments that are made to the merchant who makes the call.
+      description: List payments that were created after an order has been fullfilled. This list shows the payments that are made to the store who makes the call.
       operationId: listPayments
       parameters:
         - in: query
@@ -98,7 +246,7 @@ paths:
           required: true
       responses:
         '200':
-          description: List of payments for merchant
+          description: List of payments for a store
           schema:
             type: object
             properties:
@@ -139,7 +287,7 @@ paths:
       description: |
         Use your credentials to generate a JWT that you will
         need to perform any authenticated request on the API
-      operationId: generateToken
+      operationId: generateStoreToken
       parameters:
         - in: body
           name: credentials
@@ -234,12 +382,14 @@ definitions:
     type: object
     properties:
       errors:
-        type: object
-        properties:
-          detail:
-            type: string
-            description: Human readable explanation of the problem
-            example: Explanation of the problem
+        type: array
+        items:
+          type: object
+          properties:
+            detail:
+              type: string
+              description: Human readable explanation of the problem
+              example: Explanation of the problem
   LineItem:
     type: object
     properties:

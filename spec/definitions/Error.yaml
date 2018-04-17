@@ -1,9 +1,11 @@
 type: "object"
 properties:
   errors:
-    type: "object"
-    properties:
-      detail:
-        type: "string"
-        description: "Human readable explanation of the problem"
-        example: "Explanation of the problem"
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        detail:
+          type: "string"
+          description: "Human readable explanation of the problem"
+          example: "Explanation of the problem"

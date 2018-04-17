@@ -9,8 +9,10 @@ info:
 
     # Authentication
 
-    UTRUST offers JSON Web Tokens (JWT) authentication.  We call our resource
-    for generating JWT [Sessions](#tag/Session).
+    UTRUST offers JSON Web Tokens (JWT) authentication. We call our resource
+    for generating JWT [Sessions](#tag/Session) or [Store
+    Sessions](#tag/Store-Session) for the Stores.
+    <!-- ReDoc-Inject: <security-definitions> -->
   version: "1.0.0"
   title: "UTRUST Merchant API"
   contact:
@@ -24,14 +26,16 @@ externalDocs:
   description: Check out the repo
   url: "https://github.com/utrustdev/merchant-api-spec"
 produces:
-  - application/json
+  - application/vnd.api+json
 consumes:
-  - application/json
+  - application/vnd.api+json
 
 tags:
   - name: "Store Order"
   - name: "Store Session"
   - name: "Store Payment"
+  - name: "Session"
+  - name: "Account"
 
 x-tagGroups:
   - name: Stores API
@@ -39,11 +43,20 @@ x-tagGroups:
       - "Store Order"
       - "Store Payment"
       - "Store Session"
+  - name: Authentication
+    tags:
+      - "Session"
+      - "Account"
+  - name: Payments
+    tags:
+      - "Payment"
 
 securityDefinitions:
   JWT:
+    type: "apiKey"
+    in: "header"
+    name: "Authorization: Bearer <token>"
     description: "You can create a JSON Web Token (JWT) via our Sessions resource"
-    type: basic
 
 security:
   - JWT: []

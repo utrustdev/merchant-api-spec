@@ -1,10 +1,10 @@
 get:
   tags:
-    - "Store Payment"
-  summary: List payments
+    - "Payment"
+  summary: List payments for all the merchant's stores
   description: >-
     List payments that were created after an order has been fullfilled. This
-    list shows the payments that are made to the store who makes the call.
+    list shows the payments that are made to the merchant who makes the call.
   operationId: listPayments
   parameters:
     - in: query
@@ -15,7 +15,7 @@ get:
       required: true
   responses:
     '200':
-      description: List of payments for a store
+      description: List of payments for merchant
       schema:
         type: "object"
         properties:
