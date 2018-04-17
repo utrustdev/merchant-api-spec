@@ -132,11 +132,7 @@ paths:
         '200':
           description: Token generated
           schema:
-            type: object
-            properties:
-              token:
-                type: string
-                format: JWT
+            $ref: '#/definitions/Token'
         '401':
           description: Invalid credentials
           schema:
@@ -236,7 +232,7 @@ paths:
         - Store Payment
       summary: List payments
       description: List payments that were created after an order has been fullfilled. This list shows the payments that are made to the store who makes the call.
-      operationId: listPayments
+      operationId: listStorePayments
       parameters:
         - in: query
           name: count
@@ -260,7 +256,7 @@ paths:
         - Store Payment
       summary: Show payment details
       description: Show details for a payment by ID
-      operationId: showPaymentDetails
+      operationId: showStorePaymentDetails
       parameters:
         - in: path
           name: payment_id
@@ -304,11 +300,7 @@ paths:
         '200':
           description: Token generated
           schema:
-            type: object
-            properties:
-              token:
-                type: string
-                format: JWT
+            $ref: '#/definitions/Token'
         '401':
           description: Invalid credentials
           schema:
@@ -525,6 +517,25 @@ definitions:
       description:
         type: string
         example: The payment transaction description.
+  Token:
+    type: object
+    properties:
+      data:
+        type: object
+        properties:
+          type:
+            type: string
+            enum:
+              - session
+          id:
+            type: string
+            format: JWT
+          attributes:
+            type: object
+            properties:
+              token:
+                type: string
+                format: JWT
   UUID:
     type: string
     format: UUID

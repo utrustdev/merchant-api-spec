@@ -1,0 +1,17 @@
+type: "object"
+properties:
+  data:
+    type: "object"
+    properties:
+      type:
+        type: "string"
+        enum: ["session"]
+      id:
+        type: "string"
+        format: "JWT"
+      attributes:
+        type: "object"
+        properties:
+          token:
+            type: "string"
+            format: "JWT"

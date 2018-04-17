@@ -3,7 +3,7 @@ get:
     - "Store Payment"
   summary: Show payment details
   description: Show details for a payment by ID
-  operationId: showPaymentDetails
+  operationId: showStorePaymentDetails
   parameters:
     - in: path
       name: payment_id

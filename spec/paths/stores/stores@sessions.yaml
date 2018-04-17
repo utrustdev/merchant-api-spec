@@ -23,11 +23,7 @@ post:
     200:
       description: "Token generated"
       schema:
-        type: "object"
-        properties:
-          token:
-            type: "string"
-            format: "JWT"
+        $ref: "#/definitions/Token"
 
     401:
       description: "Invalid credentials"

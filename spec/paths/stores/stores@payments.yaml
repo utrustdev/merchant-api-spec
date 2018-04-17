@@ -5,7 +5,7 @@ get:
   description: >-
     List payments that were created after an order has been fullfilled. This
     list shows the payments that are made to the store who makes the call.
-  operationId: listPayments
+  operationId: listStorePayments
   parameters:
     - in: query
       name: count
