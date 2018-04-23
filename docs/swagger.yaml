@@ -123,11 +123,21 @@ paths:
           schema:
             type: object
             properties:
-              email:
-                type: string
-                format: email
-              password:
-                type: string
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - session
+                  attributes:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        format: email
+                      password:
+                        type: string
       responses:
         '200':
           description: Token generated
@@ -162,11 +172,21 @@ paths:
           schema:
             type: object
             properties:
-              email:
-                type: string
-                format: email
-              password:
-                type: string
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - account
+                  attributes:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        format: email
+                      password:
+                        type: string
       responses:
         '200':
           description: Account created
@@ -292,10 +312,20 @@ paths:
           schema:
             type: object
             properties:
-              client_id:
-                type: string
-              client_secret:
-                type: string
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - session
+                  attributes:
+                    type: object
+                    properties:
+                      client_id:
+                        type: string
+                      client_secret:
+                        type: string
       responses:
         '200':
           description: Token generated

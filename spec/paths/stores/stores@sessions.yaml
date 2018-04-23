@@ -14,10 +14,19 @@ post:
       schema:
         type: "object"
         properties:
-          client_id:
-            type: "string"
-          client_secret:
-            type: "string"
+          data:
+            type: "object"
+            properties:
+              type:
+                type: "string"
+                enum: ["session"]
+              attributes:
+                type: "object"
+                properties:
+                  client_id:
+                    type: "string"
+                  client_secret:
+                    type: "string"
 
   responses:
     200:
