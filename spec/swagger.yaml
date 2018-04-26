@@ -36,6 +36,8 @@ tags:
   - name: "Store Payment"
   - name: "Session"
   - name: "Account"
+  - name: "Payment"
+  - name: "Order"
 
 x-tagGroups:
   - name: Stores API
@@ -50,6 +52,9 @@ x-tagGroups:
   - name: Payments
     tags:
       - "Payment"
+  - name: Orders
+    tags:
+      - "Order"
 
 securityDefinitions:
   JWT:

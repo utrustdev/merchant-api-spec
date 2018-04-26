@@ -1,0 +1,28 @@
+type: "object"
+properties:
+  reference:
+    type: "string"
+    example: "order-1"
+  amount:
+    allOf:
+      - $ref: "#/definitions/Amount"
+    example:
+      total: "100.00"
+      currency: "USD"
+      details:
+        subtotal: "98.00"
+        handling_fee: "2.00"
+  return_urls:
+    type: "object"
+    description: |
+      If not using the express checkout flow you can specify a URL
+      to redirect the user when the payment is done
+    properties:
+      return_url:
+        type: "string"
+        format: "url"
+        example: "http://example.com/return"
+  line_items:
+    type: "array"
+    items:
+      $ref: "#/definitions/LineItem"

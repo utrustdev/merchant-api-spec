@@ -35,6 +35,8 @@ tags:
   - name: Store Payment
   - name: Session
   - name: Account
+  - name: Payment
+  - name: Order
 x-tagGroups:
   - name: Stores API
     tags:
@@ -48,6 +50,9 @@ x-tagGroups:
   - name: Payments
     tags:
       - Payment
+  - name: Orders
+    tags:
+      - Order
 securityDefinitions:
   JWT:
     type: apiKey
@@ -57,6 +62,52 @@ securityDefinitions:
 security:
   - JWT: []
 paths:
+  /orders:
+    get:
+      tags:
+        - Order
+      summary: List orders for all the merchant's stores
+      operationId: listOrders
+      parameters:
+        - in: query
+          name: count
+          type: integer
+          maximum: 20
+          default: 10
+      responses:
+        '200':
+          description: List of orders for merchant
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/Order'
+  '/orders/{order_id}':
+    get:
+      tags:
+        - Order
+      summary: Show order details
+      operationId: showOrderDetails
+      parameters:
+        - in: path
+          name: order_id
+          type: string
+          format: UUID
+          required: true
+      responses:
+        '200':
+          description: Order details
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Order'
+        '404':
+          description: Order not found
+          schema:
+            $ref: '#/definitions/Error'
   /payments:
     get:
       tags:
@@ -70,7 +121,6 @@ paths:
           type: integer
           maximum: 20
           default: 10
-          required: true
       responses:
         '200':
           description: List of payments for merchant
@@ -234,7 +284,7 @@ paths:
                     type: object
                     properties:
                       order:
-                        $ref: '#/definitions/Order'
+                        $ref: '#/definitions/OrderInput'
                       payment:
                         type: object
                         properties:
@@ -412,24 +462,7 @@ definitions:
               type: string
               description: Human readable explanation of the problem
               example: Explanation of the problem
-  LineItem:
-    type: object
-    properties:
-      sku:
-        type: string
-      name:
-        type: string
-      price:
-        type: integer
-        example: 100
-      currency:
-        type: string
-        example: USD
-      quantity:
-        type: integer
-        minimum: 1
-        example: 1
-  Order:
+  OrderInput:
     type: object
     properties:
       reference:
@@ -458,6 +491,52 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/LineItem'
+  LineItem:
+    type: object
+    properties:
+      sku:
+        type: string
+      name:
+        type: string
+      price:
+        type: integer
+        example: 100
+      currency:
+        type: string
+        example: USD
+      quantity:
+        type: integer
+        minimum: 1
+        example: 1
+  Order:
+    type: object
+    properties:
+      id:
+        allOf:
+          - $ref: '#/definitions/UUID'
+      type:
+        type: string
+        enum:
+          - orders
+      attributes:
+        type: object
+        properties:
+          created_at:
+            type: string
+            format: date-time
+            example: '2018-04-26T12:48:11.954503'
+          total_amount:
+            allOf:
+              - $ref: '#/definitions/Currency'
+          customer:
+            $ref: '#/definitions/Customer'
+          merchant_uuid:
+            allOf:
+              - $ref: '#/definitions/UUID'
+          items:
+            type: array
+            items:
+              $ref: '#/definitions/LineItem'
   PartnerFeeDetails:
     type: object
     properties:

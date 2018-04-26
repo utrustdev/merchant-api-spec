@@ -1,28 +1,28 @@
 type: "object"
 properties:
-  reference:
-    type: "string"
-    example: "order-1"
-  amount:
+  id:
     allOf:
-      - $ref: "#/definitions/Amount"
-    example:
-      total: "100.00"
-      currency: "USD"
-      details:
-        subtotal: "98.00"
-        handling_fee: "2.00"
-  return_urls:
+      - $ref: "#/definitions/UUID"
+  type:
+    type: "string"
+    enum: ["orders"]
+  attributes:
     type: "object"
-    description: |
-      If not using the express checkout flow you can specify a URL
-      to redirect the user when the payment is done
     properties:
-      return_url:
+      created_at:
         type: "string"
-        format: "url"
-        example: "http://example.com/return"
-  line_items:
-    type: "array"
-    items:
-      $ref: "#/definitions/LineItem"
+        format: "date-time"
+        example: "2018-04-26T12:48:11.954503"
+      total_amount:
+        allOf:
+          - $ref: "#/definitions/Currency"
+      customer:
+        $ref: "#/definitions/Customer"
+      merchant_uuid:
+        allOf:
+          - $ref: "#/definitions/UUID"
+      items:
+        type: "array"
+        items:
+          $ref: "#/definitions/LineItem"
+

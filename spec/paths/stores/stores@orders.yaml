@@ -22,7 +22,7 @@ post:
                 type: "object"
                 properties:
                   order:
-                    $ref: "#/definitions/Order"
+                    $ref: "#/definitions/OrderInput"
                   payment:
                     type: "object"
                     properties:
