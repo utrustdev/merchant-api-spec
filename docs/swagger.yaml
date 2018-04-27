@@ -69,11 +69,13 @@ paths:
       summary: List orders for all the merchant's stores
       operationId: listOrders
       parameters:
+        - $ref: '#/definitions/Pagination/parameters/cursorParam'
+        - $ref: '#/definitions/Pagination/parameters/limitParam'
         - in: query
-          name: count
-          type: integer
-          maximum: 20
-          default: 10
+          name: include
+          type: string
+          enum:
+            - payments
       responses:
         '200':
           description: List of orders for merchant
@@ -83,7 +85,7 @@ paths:
               data:
                 type: array
                 items:
-                  $ref: '#/definitions/Order'
+                  - $ref: '#/definitions/Order'
   '/orders/{order_id}':
     get:
       tags:
@@ -96,6 +98,11 @@ paths:
           type: string
           format: UUID
           required: true
+        - in: query
+          name: include
+          type: string
+          enum:
+            - payments
       responses:
         '200':
           description: Order details
@@ -116,11 +123,8 @@ paths:
       description: List payments that were created after an order has been fullfilled. This list shows the payments that are made to the merchant who makes the call.
       operationId: listPayments
       parameters:
-        - in: query
-          name: count
-          type: integer
-          maximum: 20
-          default: 10
+        - $ref: '#/definitions/Pagination/parameters/cursorParam'
+        - $ref: '#/definitions/Pagination/parameters/limitParam'
       responses:
         '200':
           description: List of payments for merchant
@@ -304,12 +308,8 @@ paths:
       description: List payments that were created after an order has been fullfilled. This list shows the payments that are made to the store who makes the call.
       operationId: listStorePayments
       parameters:
-        - in: query
-          name: count
-          type: integer
-          maximum: 20
-          default: 10
-          required: true
+        - $ref: '#/definitions/Pagination/parameters/cursorParam'
+        - $ref: '#/definitions/Pagination/parameters/limitParam'
       responses:
         '200':
           description: List of payments for a store
@@ -491,6 +491,21 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/LineItem'
+  Pagination:
+    parameters:
+      cursorParam:
+        in: query
+        name: cursor
+        description: Specifies where to start fetching data from
+        type: string
+      limitParam:
+        in: query
+        name: limit
+        description: The maximum number of results to return per call
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 100
   LineItem:
     type: object
     properties:

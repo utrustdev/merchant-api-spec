@@ -4,11 +4,12 @@ get:
   summary: "List orders for all the merchant's stores"
   operationId: listOrders
   parameters:
+    - $ref: "#/definitions/Pagination/parameters/cursorParam"
+    - $ref: "#/definitions/Pagination/parameters/limitParam"
     - in: query
-      name: count
-      type: integer
-      maximum: 20
-      default: 10
+      name: include
+      type: string
+      enum: ["payments"]
   responses:
     '200':
       description: List of orders for merchant
@@ -18,4 +19,4 @@ get:
           data:
             type: "array"
             items:
-              $ref: "#/definitions/Order"
+              - $ref: "#/definitions/Order"

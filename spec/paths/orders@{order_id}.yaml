@@ -9,6 +9,10 @@ get:
       type: string
       format: UUID
       required: true
+    - in: query
+      name: include
+      type: string
+      enum: ["payments"]
   responses:
     '200':
       description: Order details

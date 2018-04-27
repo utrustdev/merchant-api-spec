@@ -7,12 +7,8 @@ get:
     list shows the payments that are made to the store who makes the call.
   operationId: listStorePayments
   parameters:
-    - in: query
-      name: count
-      type: integer
-      maximum: 20
-      default: 10
-      required: true
+    - $ref: "#/definitions/Pagination/parameters/cursorParam"
+    - $ref: "#/definitions/Pagination/parameters/limitParam"
   responses:
     '200':
       description: List of payments for a store
