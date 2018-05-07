@@ -9,6 +9,9 @@ properties:
   attributes:
     type: "object"
     properties:
+      status:
+        type: "string"
+        enum: ["pending", "paid"]
       created_at:
         type: "string"
         format: "date-time"

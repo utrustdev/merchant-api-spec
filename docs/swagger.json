@@ -105,10 +105,19 @@
         "operationId": "listOrders",
         "parameters": [
           {
-            "$ref": "#/definitions/Pagination/parameters/cursorParam"
+            "in": "query",
+            "name": "cursor",
+            "description": "Specifies where to start fetching data from",
+            "type": "string"
           },
           {
-            "$ref": "#/definitions/Pagination/parameters/limitParam"
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of results to return per call",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 100
           },
           {
             "in": "query",
@@ -194,10 +203,19 @@
         "operationId": "listPayments",
         "parameters": [
           {
-            "$ref": "#/definitions/Pagination/parameters/cursorParam"
+            "in": "query",
+            "name": "cursor",
+            "description": "Specifies where to start fetching data from",
+            "type": "string"
           },
           {
-            "$ref": "#/definitions/Pagination/parameters/limitParam"
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of results to return per call",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 100
           }
         ],
         "responses": {
@@ -478,10 +496,19 @@
         "operationId": "listStorePayments",
         "parameters": [
           {
-            "$ref": "#/definitions/Pagination/parameters/cursorParam"
+            "in": "query",
+            "name": "cursor",
+            "description": "Specifies where to start fetching data from",
+            "type": "string"
           },
           {
-            "$ref": "#/definitions/Pagination/parameters/limitParam"
+            "in": "query",
+            "name": "limit",
+            "description": "The maximum number of results to return per call",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 100
           }
         ],
         "responses": {
@@ -746,25 +773,6 @@
         }
       }
     },
-    "Pagination": {
-      "parameters": {
-        "cursorParam": {
-          "in": "query",
-          "name": "cursor",
-          "description": "Specifies where to start fetching data from",
-          "type": "string"
-        },
-        "limitParam": {
-          "in": "query",
-          "name": "limit",
-          "description": "The maximum number of results to return per call",
-          "type": "integer",
-          "minimum": 1,
-          "maximum": 100,
-          "default": 100
-        }
-      }
-    },
     "LineItem": {
       "type": "object",
       "properties": {
@@ -808,6 +816,13 @@
         "attributes": {
           "type": "object",
           "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "paid"
+              ]
+            },
             "created_at": {
               "type": "string",
               "format": "date-time",

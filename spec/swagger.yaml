@@ -65,3 +65,19 @@ securityDefinitions:
 
 security:
   - JWT: []
+
+headers:
+  cursorParam:
+    in: query
+    name: cursor
+    description: "Specifies where to start fetching data from"
+    type: string
+  limitParam:
+    in: query
+    name: limit
+    description: "The maximum number of results to return per call"
+    type: integer
+    minimum: 1
+    maximum: 100
+    default: 100
+

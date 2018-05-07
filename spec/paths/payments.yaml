@@ -7,8 +7,8 @@ get:
     list shows the payments that are made to the merchant who makes the call.
   operationId: listPayments
   parameters:
-    - $ref: "#/definitions/Pagination/parameters/cursorParam"
-    - $ref: "#/definitions/Pagination/parameters/limitParam"
+    - $ref: "#/headers/cursorParam"
+    - $ref: "#/headers/limitParam"
   responses:
     '200':
       description: List of payments for merchant

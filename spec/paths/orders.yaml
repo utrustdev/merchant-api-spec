@@ -4,8 +4,8 @@ get:
   summary: "List orders for all the merchant's stores"
   operationId: listOrders
   parameters:
-    - $ref: "#/definitions/Pagination/parameters/cursorParam"
-    - $ref: "#/definitions/Pagination/parameters/limitParam"
+    - $ref: "#/headers/cursorParam"
+    - $ref: "#/headers/limitParam"
     - in: query
       name: include
       type: string
