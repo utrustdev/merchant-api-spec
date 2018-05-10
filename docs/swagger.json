@@ -567,7 +567,7 @@
         }
       }
     },
-    "/stores/sessions": {
+    "/stores/session": {
       "post": {
         "tags": [
           "Store Session"

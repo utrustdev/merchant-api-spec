@@ -372,7 +372,7 @@ paths:
           description: Payment not found
           schema:
             $ref: '#/definitions/Error'
-  /stores/sessions:
+  /stores/session:
     post:
       tags:
         - Store Session
