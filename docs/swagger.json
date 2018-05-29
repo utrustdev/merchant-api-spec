@@ -38,9 +38,6 @@
       "name": "Store Session"
     },
     {
-      "name": "Store Payment"
-    },
-    {
       "name": "Session"
     },
     {
@@ -58,7 +55,6 @@
       "name": "Stores API",
       "tags": [
         "Store Order",
-        "Store Payment",
         "Store Session"
       ]
     },
@@ -67,12 +63,6 @@
       "tags": [
         "Session",
         "Account"
-      ]
-    },
-    {
-      "name": "Payments",
-      "tags": [
-        "Payment"
       ]
     },
     {
@@ -124,7 +114,7 @@
             "name": "include",
             "type": "string",
             "enum": [
-              "payments"
+              "payment"
             ]
           }
         ],
@@ -186,87 +176,6 @@
           },
           "404": {
             "description": "Order not found",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/payments": {
-      "get": {
-        "tags": [
-          "Payment"
-        ],
-        "summary": "List payments for all the merchant's stores",
-        "description": "List payments that were created after an order has been fullfilled. This list shows the payments that are made to the merchant who makes the call.",
-        "operationId": "listPayments",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "cursor",
-            "description": "Specifies where to start fetching data from",
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The maximum number of results to return per call",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 100,
-            "default": 100
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of payments for merchant",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Payment"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/payments/{payment_id}": {
-      "get": {
-        "tags": [
-          "Payment"
-        ],
-        "summary": "Show payment details",
-        "description": "Show details for a payment by ID",
-        "operationId": "showPaymentDetails",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "payment_id",
-            "type": "string",
-            "format": "UUID",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Payment details",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "$ref": "#/definitions/Payment"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Payment not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -482,87 +391,6 @@
         "responses": {
           "201": {
             "description": "Order created"
-          }
-        }
-      }
-    },
-    "/stores/payments": {
-      "get": {
-        "tags": [
-          "Store Payment"
-        ],
-        "summary": "List payments",
-        "description": "List payments that were created after an order has been fullfilled. This list shows the payments that are made to the store who makes the call.",
-        "operationId": "listStorePayments",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "cursor",
-            "description": "Specifies where to start fetching data from",
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The maximum number of results to return per call",
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 100,
-            "default": 100
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of payments for a store",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/definitions/Payment"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/stores/payments/{payment_id}": {
-      "get": {
-        "tags": [
-          "Store Payment"
-        ],
-        "summary": "Show payment details",
-        "description": "Show details for a payment by ID",
-        "operationId": "showStorePaymentDetails",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "payment_id",
-            "type": "string",
-            "format": "UUID",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Payment details",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "$ref": "#/definitions/Payment"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Payment not found",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
           }
         }
       }

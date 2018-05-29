@@ -33,7 +33,6 @@ consumes:
 tags:
   - name: "Store Order"
   - name: "Store Session"
-  - name: "Store Payment"
   - name: "Session"
   - name: "Account"
   - name: "Payment"
@@ -43,15 +42,11 @@ x-tagGroups:
   - name: Stores API
     tags:
       - "Store Order"
-      - "Store Payment"
       - "Store Session"
   - name: Authentication
     tags:
       - "Session"
       - "Account"
-  - name: Payments
-    tags:
-      - "Payment"
   - name: Orders
     tags:
       - "Order"

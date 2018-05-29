@@ -9,7 +9,7 @@ get:
     - in: query
       name: include
       type: string
-      enum: ["payments"]
+      enum: ["payment"]
   responses:
     '200':
       description: List of orders for merchant
