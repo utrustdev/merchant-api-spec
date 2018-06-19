@@ -200,6 +200,8 @@ paths:
                         format: email
                       password:
                         type: string
+                      organization_name:
+                        type: string
       responses:
         '200':
           description: Account created
@@ -214,7 +216,7 @@ paths:
                   type:
                     type: string
                     enum:
-                      - users
+                      - merchants
                   attributes:
                     type: object
         '400':

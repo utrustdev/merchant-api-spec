@@ -292,6 +292,9 @@
                         },
                         "password": {
                           "type": "string"
+                        },
+                        "organization_name": {
+                          "type": "string"
                         }
                       }
                     }
@@ -316,7 +319,7 @@
                     "type": {
                       "type": "string",
                       "enum": [
-                        "users"
+                        "merchants"
                       ]
                     },
                     "attributes": {
