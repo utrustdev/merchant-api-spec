@@ -34,3 +34,22 @@ post:
   responses:
     201:
       description: "Order created"
+      schema:
+        type: "object"
+        properties:
+          data:
+            type: "object"
+            properties:
+              type:
+                type: "string"
+                enum: ["orders_redirect"]
+              id:
+                allOf:
+                  - $ref: "#/definitions/UUID"
+              attributes:
+                type: "object"
+                properties:
+                  redirect_url:
+                    type: "string"
+                    format: "URL"
+                    example: "https://buyers.utrust.com?uuid=some-uuid"
