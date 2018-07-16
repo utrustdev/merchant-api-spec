@@ -37,6 +37,7 @@ tags:
   - name: "Account"
   - name: "Payment"
   - name: "Order"
+  - name: "MultiFactor"
 
 x-tagGroups:
   - name: Stores API
@@ -47,6 +48,7 @@ x-tagGroups:
     tags:
       - "Session"
       - "Account"
+      - "MultiFactor"
   - name: Orders
     tags:
       - "Order"

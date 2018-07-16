@@ -1,0 +1,34 @@
+post:
+  tags:
+    - "MultiFactor"
+  summary: "Requests the activation for a user"
+  operationId: "multiFactorActivate"
+  parameters:
+    - in: "body"
+      name: "tfa_activation"
+      required: true
+      schema:
+        type: "object"
+        properties:
+          data:
+            type: "object"
+            properties:
+              type:
+                type: "string"
+                enum: ["tfa_activation"]
+  responses:
+    200:
+      description: "Multi factor activated"
+      schema:
+        type: "object"
+        properties:
+          data:
+            type: "object"
+            properties:
+              type:
+                type: "string"
+                enum: ["tfa_activation"]
+              id:
+                allOf:
+                  - $ref: "#/definitions/UUID"
+                description: "The user uuid"

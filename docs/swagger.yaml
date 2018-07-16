@@ -36,6 +36,7 @@ tags:
   - name: Account
   - name: Payment
   - name: Order
+  - name: MultiFactor
 x-tagGroups:
   - name: Stores API
     tags:
@@ -45,6 +46,7 @@ x-tagGroups:
     tags:
       - Session
       - Account
+      - MultiFactor
   - name: Orders
     tags:
       - Order
@@ -57,6 +59,124 @@ securityDefinitions:
 security:
   - JWT: []
 paths:
+  /tfa_activation:
+    post:
+      tags:
+        - MultiFactor
+      summary: Requests the activation for a user
+      operationId: multiFactorActivate
+      parameters:
+        - in: body
+          name: tfa_activation
+          required: true
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - tfa_activation
+      responses:
+        '200':
+          description: Multi factor activated
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - tfa_activation
+                  id:
+                    allOf:
+                      - $ref: '#/definitions/UUID'
+                    description: The user uuid
+  '/tfa_activation/{user_id}':
+    delete:
+      tags:
+        - MultiFactor
+      summary: Requests the deactivation for a user
+      operationId: multiFactorDeactivate
+      parameters:
+        - in: path
+          name: user_id
+          type: string
+          format: UUID
+          required: true
+      responses:
+        '200':
+          description: Multi factor activated
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - tfa_activation
+                  id:
+                    allOf:
+                      - $ref: '#/definitions/UUID'
+                    description: The user uuid
+  /tfa_secret:
+    post:
+      tags:
+        - MultiFactor
+      summary: Requests the secret for a user
+      description: 'Requests the generation of a Time-based One Time Password (secret) for the user, including a URI to be included in a QR code'
+      operationId: multiFactorGenerateSecret
+      parameters:
+        - in: body
+          name: tfa_secret
+          required: true
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - tfa_secret
+      responses:
+        '200':
+          description: Secret generated
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - tfa_secret
+                  id:
+                    allOf:
+                      - $ref: '#/definitions/UUID'
+                    description: The user uuid
+                  attributes:
+                    type: object
+                    properties:
+                      secret:
+                        type: string
+                        example: 407c1e588e224ce48ff4caf2e2525742
+                      key_uri:
+                        type: string
+                        description: URI to be embedded into a QR code
+                        example: otpauth%3A%2F%2Ftotp%2FUTRUST%3Abraeden1983%40lueilwitz.org%3Fissuer%3DUTRUST%26secret%3DGQYDOYZRMU2TQODFGIZDIY3FGQ4GMZRUMNQWMMTFGI2TENJXGQZA
+                      recovery_code:
+                        type: string
+                        description: A code to be given to user so that they can later recover the account if the secret is lost
+                        example: c2f7a15dc34c4c1f8818094741c6aa78
   /orders:
     get:
       tags:
