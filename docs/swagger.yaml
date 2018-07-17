@@ -59,7 +59,7 @@ securityDefinitions:
 security:
   - JWT: []
 paths:
-  /tfa_activation:
+  /multi_factor_auth/tfa_activation:
     post:
       tags:
         - MultiFactor
@@ -96,7 +96,7 @@ paths:
                     allOf:
                       - $ref: '#/definitions/UUID'
                     description: The user uuid
-  '/tfa_activation/{user_id}':
+  '/multi_factor_auth/tfa_activation/{user_id}':
     delete:
       tags:
         - MultiFactor
@@ -125,7 +125,7 @@ paths:
                     allOf:
                       - $ref: '#/definitions/UUID'
                     description: The user uuid
-  /tfa_secret:
+  /multi_factor_auth/tfa_secret:
     post:
       tags:
         - MultiFactor

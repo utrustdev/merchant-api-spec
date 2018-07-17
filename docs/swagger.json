@@ -90,7 +90,7 @@
     }
   ],
   "paths": {
-    "/tfa_activation": {
+    "/multi_factor_auth/tfa_activation": {
       "post": {
         "tags": [
           "MultiFactor"
@@ -151,7 +151,7 @@
         }
       }
     },
-    "/tfa_activation/{user_id}": {
+    "/multi_factor_auth/tfa_activation/{user_id}": {
       "delete": {
         "tags": [
           "MultiFactor"
@@ -198,7 +198,7 @@
         }
       }
     },
-    "/tfa_secret": {
+    "/multi_factor_auth/tfa_secret": {
       "post": {
         "tags": [
           "MultiFactor"
