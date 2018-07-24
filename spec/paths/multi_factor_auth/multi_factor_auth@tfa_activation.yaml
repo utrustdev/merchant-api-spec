@@ -16,6 +16,12 @@ post:
               type:
                 type: "string"
                 enum: ["tfa_activation"]
+              attributes:
+                type: "object"
+                properties:
+                  code:
+                    type: "string"
+                    example: "123456"
   responses:
     200:
       description: "Multi factor activated"
