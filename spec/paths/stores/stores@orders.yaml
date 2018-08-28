@@ -23,12 +23,6 @@ post:
                 properties:
                   order:
                     $ref: "#/definitions/OrderInput"
-                  payment:
-                    type: "object"
-                    properties:
-                      currency:
-                        type: "string"
-                        example: "UTK"
                   customer:
                     $ref: "#/definitions/Customer"
   responses:
