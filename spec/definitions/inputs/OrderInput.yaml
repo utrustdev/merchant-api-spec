@@ -20,8 +20,20 @@ properties:
     properties:
       return_url:
         type: "string"
+        description: "(required) URL to redirect the user in case of everything going well"
+        required: true
         format: "url"
         example: "http://example.com/return"
+      cancel_url:
+        type: "string"
+        description: "URL to redirect the user in case of something going wrong"
+        format: "url"
+        example: "http://example.com/cancel"
+      callback_url:
+        type: "string"
+        description: "URL to POST information to when the payment is confirmed"
+        format: "url"
+        example: "http://example.com/callback"
   line_items:
     type: "array"
     items:
