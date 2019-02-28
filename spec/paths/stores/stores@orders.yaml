@@ -2,7 +2,26 @@ post:
   tags:
     - "Store Order"
   summary: "Create an order"
-  description: "Create a new order for payment processing. Returns a url to a page where a buyer can fulfill the payment for that order."
+  description: |
+    Create a new order for payment processing. Returns a url to a page where a
+    buyer can fulfill the payment for that order.
+
+    ### Events
+
+    Events are our way of letting you know when something interesting happens
+    with an order. For example, when a payment for an order is confirmed, we
+    create a `ORDER.PAYMENT.RECEIVED` event.
+
+    We communicate these events via a webhooks system, which are sent to the
+    URL you provide us as the callback URL for the order. We will retry to send
+    you the event for 10 times or until we get a response with a 200 status
+    code. If none of these happens, the event notification will be lost.
+
+    List of events:
+
+    * `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed
+    * `ORDER.PAYMENT.FAILED` - Triggered when there was some issue with the payment
+
   operationId: "createOrder"
   parameters:
     - in: "body"
