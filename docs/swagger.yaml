@@ -1,7 +1,7 @@
 swagger: '2.0'
 schemes:
   - https
-host: api.utrust.com
+host: merchants.api.pixels-utrust.com/api
 basePath: /
 info:
   description: |
@@ -19,11 +19,13 @@ info:
 
     <!-- ReDoc-Inject: <security-definitions> -->
 
-    In the next few days we will make the process to obtain credentials 
-    available.
+    You can find the credentials needed in the merchant dashboard, in the
+    Organization settings. In order to have access to it you must first sign up
+    at https://merchants.pixels-utrust.com/onboarding/sign-up. Note that you
+    should use a different email from what you used in the wallet.
 
-    These credentials will grant many privileges within your UTRUST 
-    account, so be sure to keep them secure! Do not share them in publicly 
+    These credentials will grant many privileges within your UTRUST
+    account, so be sure to keep them secure! Do not share them in publicly
     accessible areas such as GitHUB, client-side code, and so on.
 
     All API requests must be made over HTTPS and with authentication.
@@ -62,6 +64,8 @@ tags:
   - name: Account
   - name: Order
   - name: MultiFactor
+  - name: Account Settings
+  - name: Account Password
 x-tagGroups:
   - name: Stores API
     tags:
@@ -75,6 +79,10 @@ x-tagGroups:
   - name: Orders
     tags:
       - Order
+  - name: Settings
+    tags:
+      - Account Settings
+      - Account Password
 securityDefinitions:
   JWT:
     type: apiKey
@@ -351,6 +359,141 @@ paths:
           description: Order not found
           schema:
             $ref: '#/definitions/Error'
+  /settings/account:
+    get:
+      tags:
+        - Account Settings
+      summary: Fetch the current account settings
+      operationId: getAccountSettings
+      responses:
+        '200':
+          description: Account settings
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - orders_redirect
+                  id:
+                    allOf:
+                      - $ref: '#/definitions/UUID'
+                  attributes:
+                    $ref: '#/definitions/AccountSettings'
+    patch:
+      tags:
+        - Account Settings
+      summary: Update the account settings
+      operationId: updateAccountSettings
+      parameters:
+        - in: body
+          name: settings
+          description: The settings to be updated
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - account_settings
+                  id:
+                    description: The current user id
+                    allOf:
+                      - $ref: '#/definitions/UUID'
+                  attributes:
+                    type: object
+                    properties:
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                    required:
+                      - first_name
+                      - last_name
+      responses:
+        '200':
+          description: Account settings
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - orders_redirect
+                  id:
+                    allOf:
+                      - $ref: '#/definitions/UUID'
+                  attributes:
+                    $ref: '#/definitions/AccountSettings'
+  /settings/password:
+    patch:
+      tags:
+        - Account Password
+      summary: Update the account password
+      operationId: updateAccountPassword
+      parameters:
+        - in: body
+          name: account-password
+          description: The password to be updated
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - password
+                  id:
+                    description: The current user id
+                    allOf:
+                      - $ref: '#/definitions/UUID'
+                  attributes:
+                    type: object
+                    properties:
+                      password:
+                        type: string
+                      new_password:
+                        type: string
+                      tfa_token:
+                        type: string
+                        description: Token is required if 2FA has been activated
+                        example: '123456'
+                    required:
+                      - password
+                      - new_password
+      responses:
+        '200':
+          description: Password updated
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - password
+                  id:
+                    allOf:
+                      - $ref: '#/definitions/UUID'
+                  attributes:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: Password successfully changed.
   /sign_in:
     post:
       tags:
@@ -364,7 +507,6 @@ paths:
         - in: body
           name: credentials
           description: Your UTRUST credentials
-          required: true
           schema:
             type: object
             properties:
@@ -383,6 +525,9 @@ paths:
                         format: email
                       password:
                         type: string
+                    required:
+                      - email
+                      - password
       responses:
         '200':
           description: Token generated
@@ -413,7 +558,6 @@ paths:
         - in: body
           name: credentials
           description: Credentials you choose to be used on your account
-          required: true
           schema:
             type: object
             properties:
@@ -434,6 +578,16 @@ paths:
                         type: string
                       organization_name:
                         type: string
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                    required:
+                      - email
+                      - password
+                      - organization_name
+                      - first_name
+                      - last_name
       responses:
         '200':
           description: Account created
@@ -478,13 +632,55 @@ paths:
         List of events:
 
         * `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed
-        * `ORDER.PAYMENT.FAILED` - Triggered when there was some issue with the payment
+
+        #### Verifying events
+
+        Since these events are sent from us to you, you might want to verify that
+        they were not tampered with in the process. To allow for that, we sign
+        every event with HMAC SHA256, using the client secret for your store as the
+        signing key. You can then use the client id to verify it.
+
+        We order the payload for each event, so that we can guarantee it will
+        always be the same. To do this on your side you should first remove the
+        signature field, and then recursively order each field alphabetically by
+        its name. For example:
+
+        ```
+        payload = {
+          "event_type":"ORDER.PAYMENT.RECEIVED",
+          "resource":{
+            "reference":"1400012634"
+            "amount":"10.8200",
+            "currency":"EUR",
+          },
+          "signature":"5ef8a5994e917c14479b31f690d4d2a023dfcc6059081504e3087977b21580ab",
+          "state":"completed"
+        }
+
+        ordered_payload = {
+          "event_type":"ORDER.PAYMENT.RECEIVED",
+          "resource":{
+            "amount":"10.8200",
+            "currency":"EUR",
+            "reference":"1400012634"
+          },
+          "state":"completed"
+        }
+        ```
+
+        Once it's ordered, you should join it into a string, sign it and then base16 encode it:
+
+        ```
+        joined_payload = “event_typeORDER.PAYMENT.RECEIVEDresourceamount10.8200resourcecurrencyEURresourcereference1400012634statecompleted"
+
+        signed_payload  = :crypto.hmac(:sha256, secret, joined_payload)
+        signature = Base.encode16(signed_payload, case: :lower)
+        ```
       operationId: createOrder
       parameters:
         - in: body
           name: order
           description: The order information
-          required: true
           schema:
             type: object
             properties:
@@ -502,6 +698,9 @@ paths:
                         $ref: '#/definitions/OrderInput'
                       customer:
                         $ref: '#/definitions/Customer'
+                    required:
+                      - order
+                      - customer
       responses:
         '201':
           description: Order created
@@ -538,7 +737,6 @@ paths:
         - in: body
           name: credentials
           description: Your UTRUST credentials
-          required: true
           schema:
             type: object
             properties:
@@ -556,6 +754,9 @@ paths:
                         type: string
                       client_secret:
                         type: string
+                    required:
+                      - client_id
+                      - client_secret
       responses:
         '200':
           description: Token generated
@@ -565,7 +766,31 @@ paths:
           description: Invalid credentials
           schema:
             $ref: '#/definitions/Error'
+    delete:
+      tags:
+        - Store Session
+      summary: Revokes the token for the current session
+      operationId: revokeStoreToken
+      responses:
+        '200':
+          description: Token revoked
 definitions:
+  AccountSettings:
+    type: object
+    properties:
+      email:
+        type: string
+        format: email
+        example: john@example.com
+      first_name:
+        type: string
+        example: John
+      last_name:
+        type: string
+        example: Doe
+      tfa_active:
+        type: boolean
+        description: True if two factor authentication has been set up
   Amount:
     type: object
     properties:
@@ -585,10 +810,17 @@ definitions:
             type: string
             format: decimal
             example: '39.00'
-          handling_fee:
+          shipping:
             type: string
             format: decimal
             example: '1.00'
+          tax:
+            type: string
+            format: decimal
+            example: '1.00'
+    required:
+      - total
+      - currency
   Currency:
     type: object
     properties:
@@ -630,6 +862,11 @@ definitions:
       country:
         type: string
         example: US
+    required:
+      - first_name
+      - last_name
+      - email
+      - country
   Error:
     type: object
     properties:
@@ -665,8 +902,7 @@ definitions:
         properties:
           return_url:
             type: string
-            description: (required) URL to redirect the user in case of everything going well
-            required: true
+            description: URL to redirect the user in case of everything going well
             format: url
             example: 'http://example.com/return'
           cancel_url:
@@ -679,10 +915,17 @@ definitions:
             description: URL to POST information to when the payment is confirmed
             format: url
             example: 'http://example.com/callback'
+        required:
+          - return_url
       line_items:
         type: array
         items:
           $ref: '#/definitions/LineItem'
+    required:
+      - reference
+      - amount
+      - return_urls
+      - line_items
   LineItem:
     type: object
     properties:
@@ -700,6 +943,12 @@ definitions:
         type: integer
         minimum: 1
         example: 1
+    required:
+      - sku
+      - name
+      - price
+      - currency
+      - quantity
   Order:
     type: object
     properties:

@@ -16,7 +16,14 @@ properties:
         type: "string"
         format: "decimal"
         example: "39.00"
-      handling_fee:
+      shipping:
         type: "string"
         format: "decimal"
         example: "1.00"
+      tax:
+        type: "string"
+        format: "decimal"
+        example: "1.00"
+required:
+  - "total"
+  - "currency"

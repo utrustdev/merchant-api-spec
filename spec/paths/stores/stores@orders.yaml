@@ -20,14 +20,56 @@ post:
     List of events:
 
     * `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed
-    * `ORDER.PAYMENT.FAILED` - Triggered when there was some issue with the payment
+
+    #### Verifying events
+
+    Since these events are sent from us to you, you might want to verify that
+    they were not tampered with in the process. To allow for that, we sign
+    every event with HMAC SHA256, using the client secret for your store as the
+    signing key. You can then use the client id to verify it.
+
+    We order the payload for each event, so that we can guarantee it will
+    always be the same. To do this on your side you should first remove the
+    signature field, and then recursively order each field alphabetically by
+    its name. For example:
+
+    ```
+    payload = {
+      "event_type":"ORDER.PAYMENT.RECEIVED",
+      "resource":{
+        "reference":"1400012634"
+        "amount":"10.8200",
+        "currency":"EUR",
+      },
+      "signature":"5ef8a5994e917c14479b31f690d4d2a023dfcc6059081504e3087977b21580ab",
+      "state":"completed"
+    }
+
+    ordered_payload = {
+      "event_type":"ORDER.PAYMENT.RECEIVED",
+      "resource":{
+        "amount":"10.8200",
+        "currency":"EUR",
+        "reference":"1400012634"
+      },
+      "state":"completed"
+    }
+    ```
+
+    Once it's ordered, you should join it into a string, sign it and then base16 encode it:
+
+    ```
+    joined_payload = “event_typeORDER.PAYMENT.RECEIVEDresourceamount10.8200resourcecurrencyEURresourcereference1400012634statecompleted"
+
+    signed_payload  = :crypto.hmac(:sha256, secret, joined_payload)
+    signature = Base.encode16(signed_payload, case: :lower)
+    ```
 
   operationId: "createOrder"
   parameters:
     - in: "body"
       name: "order"
       description: "The order information"
-      required: true
       schema:
         type: "object"
         properties:
@@ -44,6 +86,9 @@ post:
                     $ref: "#/definitions/OrderInput"
                   customer:
                     $ref: "#/definitions/Customer"
+                required:
+                  - "order"
+                  - "customer"
   responses:
     201:
       description: "Order created"

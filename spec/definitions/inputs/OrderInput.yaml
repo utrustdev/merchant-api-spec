@@ -20,8 +20,7 @@ properties:
     properties:
       return_url:
         type: "string"
-        description: "(required) URL to redirect the user in case of everything going well"
-        required: true
+        description: "URL to redirect the user in case of everything going well"
         format: "url"
         example: "http://example.com/return"
       cancel_url:
@@ -34,7 +33,14 @@ properties:
         description: "URL to POST information to when the payment is confirmed"
         format: "url"
         example: "http://example.com/callback"
+    required:
+      - "return_url"
   line_items:
     type: "array"
     items:
       $ref: "#/definitions/LineItem"
+required:
+  - "reference"
+  - "amount"
+  - "return_urls"
+  - "line_items"

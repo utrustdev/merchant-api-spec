@@ -1,7 +1,7 @@
 swagger: "2.0"
 schemes:
   - https
-host: merchants.api.pixels-utrust.com/api
+host: "merchants.api.pixels-utrust.com/api"
 basePath: /
 info:
   description: |
@@ -19,11 +19,13 @@ info:
 
     <!-- ReDoc-Inject: <security-definitions> -->
 
-    In the next few days we will make the process to obtain credentials 
-    available.
+    You can find the credentials needed in the merchant dashboard, in the
+    Organization settings. In order to have access to it you must first sign up
+    at https://merchants.pixels-utrust.com/onboarding/sign-up. Note that you
+    should use a different email from what you used in the wallet.
 
-    These credentials will grant many privileges within your UTRUST 
-    account, so be sure to keep them secure! Do not share them in publicly 
+    These credentials will grant many privileges within your UTRUST
+    account, so be sure to keep them secure! Do not share them in publicly
     accessible areas such as GitHUB, client-side code, and so on.
 
     All API requests must be made over HTTPS and with authentication.
@@ -63,6 +65,8 @@ tags:
   - name: "Account"
   - name: "Order"
   - name: "MultiFactor"
+  - name: "Account Settings"
+  - name: "Account Password"
 
 x-tagGroups:
   - name: Stores API
@@ -77,6 +81,10 @@ x-tagGroups:
   - name: Orders
     tags:
       - "Order"
+  - name: Settings
+    tags:
+      - "Account Settings"
+      - "Account Password"
 
 securityDefinitions:
   JWT:

@@ -1,0 +1,15 @@
+type: "object"
+properties:
+  email:
+    type: "string"
+    format: "email"
+    example: "john@example.com"
+  first_name:
+    type: "string"
+    example: "John"
+  last_name:
+    type: "string"
+    example: "Doe"
+  tfa_active:
+    type: "boolean"
+    description: "True if two factor authentication has been set up"

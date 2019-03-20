@@ -3,10 +3,10 @@
   "schemes": [
     "https"
   ],
-  "host": "api.utrust.com",
+  "host": "merchants.api.pixels-utrust.com/api",
   "basePath": "/",
   "info": {
-    "description": "The UTRUST API is organized around\n[REST](https://en.wikipedia.org/wiki/Representational_state_transfer),\nparticularly using the [JSON:API spec](https://jsonapi.org/). Our API has\nresource-oriented URLs, returns JSON responses and uses standard HTTP\nresponse codes and verbs.\n\n# Authentication\n\nUTRUST offers JSON Web Tokens (JWT) authentication. We call our resource\nfor generating JWT [Sessions](#tag/Session) or [Store\nSessions](#tag/Store-Session) for the Stores.\n\n<!-- ReDoc-Inject: <security-definitions> -->\n\nIn the next few days we will make the process to obtain credentials \navailable.\n\nThese credentials will grant many privileges within your UTRUST \naccount, so be sure to keep them secure! Do not share them in publicly \naccessible areas such as GitHUB, client-side code, and so on.\n\nAll API requests must be made over HTTPS and with authentication.\n\n# Stores vs Merchant API\n\nThe UTRUST API is divided into two separate use cases, the [Stores\nAPI](#tag/Store-Order) which provides endpoints to be used by plugins or\nother integrations with your store.\n\nThe Merchants API is comprised by all the endpoints we use to power our\nMerchant dashboard. You make them public so that you can integrate with\nyour own system as you please, but we do recommend using our dashboard as\nmuch as possible, as we'll be sure to keep it up to date and as useful as\npossible.\n",
+    "description": "The UTRUST API is organized around\n[REST](https://en.wikipedia.org/wiki/Representational_state_transfer),\nparticularly using the [JSON:API spec](https://jsonapi.org/). Our API has\nresource-oriented URLs, returns JSON responses and uses standard HTTP\nresponse codes and verbs.\n\n# Authentication\n\nUTRUST offers JSON Web Tokens (JWT) authentication. We call our resource\nfor generating JWT [Sessions](#tag/Session) or [Store\nSessions](#tag/Store-Session) for the Stores.\n\n<!-- ReDoc-Inject: <security-definitions> -->\n\nYou can find the credentials needed in the merchant dashboard, in the\nOrganization settings. In order to have access to it you must first sign up\nat https://merchants.pixels-utrust.com/onboarding/sign-up. Note that you\nshould use a different email from what you used in the wallet.\n\nThese credentials will grant many privileges within your UTRUST\naccount, so be sure to keep them secure! Do not share them in publicly\naccessible areas such as GitHUB, client-side code, and so on.\n\nAll API requests must be made over HTTPS and with authentication.\n\n# Stores vs Merchant API\n\nThe UTRUST API is divided into two separate use cases, the [Stores\nAPI](#tag/Store-Order) which provides endpoints to be used by plugins or\nother integrations with your store.\n\nThe Merchants API is comprised by all the endpoints we use to power our\nMerchant dashboard. You make them public so that you can integrate with\nyour own system as you please, but we do recommend using our dashboard as\nmuch as possible, as we'll be sure to keep it up to date and as useful as\npossible.\n",
     "version": "1.0.0",
     "title": "UTRUST Merchant API",
     "contact": {
@@ -48,6 +48,12 @@
     },
     {
       "name": "MultiFactor"
+    },
+    {
+      "name": "Account Settings"
+    },
+    {
+      "name": "Account Password"
     }
   ],
   "x-tagGroups": [
@@ -70,6 +76,13 @@
       "name": "Orders",
       "tags": [
         "Order"
+      ]
+    },
+    {
+      "name": "Settings",
+      "tags": [
+        "Account Settings",
+        "Account Password"
       ]
     }
   ],
@@ -510,6 +523,227 @@
         }
       }
     },
+    "/settings/account": {
+      "get": {
+        "tags": [
+          "Account Settings"
+        ],
+        "summary": "Fetch the current account settings",
+        "operationId": "getAccountSettings",
+        "responses": {
+          "200": {
+            "description": "Account settings",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "orders_redirect"
+                      ]
+                    },
+                    "id": {
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/UUID"
+                        }
+                      ]
+                    },
+                    "attributes": {
+                      "$ref": "#/definitions/AccountSettings"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Account Settings"
+        ],
+        "summary": "Update the account settings",
+        "operationId": "updateAccountSettings",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "settings",
+            "description": "The settings to be updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "account_settings"
+                      ]
+                    },
+                    "id": {
+                      "description": "The current user id",
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/UUID"
+                        }
+                      ]
+                    },
+                    "attributes": {
+                      "type": "object",
+                      "properties": {
+                        "first_name": {
+                          "type": "string"
+                        },
+                        "last_name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "first_name",
+                        "last_name"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account settings",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "orders_redirect"
+                      ]
+                    },
+                    "id": {
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/UUID"
+                        }
+                      ]
+                    },
+                    "attributes": {
+                      "$ref": "#/definitions/AccountSettings"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/password": {
+      "patch": {
+        "tags": [
+          "Account Password"
+        ],
+        "summary": "Update the account password",
+        "operationId": "updateAccountPassword",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "account-password",
+            "description": "The password to be updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "password"
+                      ]
+                    },
+                    "id": {
+                      "description": "The current user id",
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/UUID"
+                        }
+                      ]
+                    },
+                    "attributes": {
+                      "type": "object",
+                      "properties": {
+                        "password": {
+                          "type": "string"
+                        },
+                        "new_password": {
+                          "type": "string"
+                        },
+                        "tfa_token": {
+                          "type": "string",
+                          "description": "Token is required if 2FA has been activated",
+                          "example": "123456"
+                        }
+                      },
+                      "required": [
+                        "password",
+                        "new_password"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Password updated",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "password"
+                      ]
+                    },
+                    "id": {
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/UUID"
+                        }
+                      ]
+                    },
+                    "attributes": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "Password successfully changed."
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/sign_in": {
       "post": {
         "tags": [
@@ -523,7 +757,6 @@
             "in": "body",
             "name": "credentials",
             "description": "Your UTRUST credentials",
-            "required": true,
             "schema": {
               "type": "object",
               "properties": {
@@ -546,7 +779,11 @@
                         "password": {
                           "type": "string"
                         }
-                      }
+                      },
+                      "required": [
+                        "email",
+                        "password"
+                      ]
                     }
                   }
                 }
@@ -597,7 +834,6 @@
             "in": "body",
             "name": "credentials",
             "description": "Credentials you choose to be used on your account",
-            "required": true,
             "schema": {
               "type": "object",
               "properties": {
@@ -622,8 +858,21 @@
                         },
                         "organization_name": {
                           "type": "string"
+                        },
+                        "first_name": {
+                          "type": "string"
+                        },
+                        "last_name": {
+                          "type": "string"
                         }
-                      }
+                      },
+                      "required": [
+                        "email",
+                        "password",
+                        "organization_name",
+                        "first_name",
+                        "last_name"
+                      ]
                     }
                   }
                 }
@@ -672,14 +921,13 @@
           "Store Order"
         ],
         "summary": "Create an order",
-        "description": "Create a new order for payment processing. Returns a url to a page where a\nbuyer can fulfill the payment for that order.\n\n### Events\n\nEvents are our way of letting you know when something interesting happens\nwith an order. For example, when a payment for an order is confirmed, we\ncreate a `ORDER.PAYMENT.RECEIVED` event.\n\nWe communicate these events via a webhooks system, which are sent to the\nURL you provide us as the callback URL for the order. We will retry to send\nyou the event for 10 times or until we get a response with a 200 status\ncode. If none of these happens, the event notification will be lost.\n\nList of events:\n\n* `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed\n* `ORDER.PAYMENT.FAILED` - Triggered when there was some issue with the payment\n",
+        "description": "Create a new order for payment processing. Returns a url to a page where a\nbuyer can fulfill the payment for that order.\n\n### Events\n\nEvents are our way of letting you know when something interesting happens\nwith an order. For example, when a payment for an order is confirmed, we\ncreate a `ORDER.PAYMENT.RECEIVED` event.\n\nWe communicate these events via a webhooks system, which are sent to the\nURL you provide us as the callback URL for the order. We will retry to send\nyou the event for 10 times or until we get a response with a 200 status\ncode. If none of these happens, the event notification will be lost.\n\nList of events:\n\n* `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed\n\n#### Verifying events\n\nSince these events are sent from us to you, you might want to verify that\nthey were not tampered with in the process. To allow for that, we sign\nevery event with HMAC SHA256, using the client secret for your store as the\nsigning key. You can then use the client id to verify it.\n\nWe order the payload for each event, so that we can guarantee it will\nalways be the same. To do this on your side you should first remove the\nsignature field, and then recursively order each field alphabetically by\nits name. For example:\n\n```\npayload = {\n  \"event_type\":\"ORDER.PAYMENT.RECEIVED\",\n  \"resource\":{\n    \"reference\":\"1400012634\"\n    \"amount\":\"10.8200\",\n    \"currency\":\"EUR\",\n  },\n  \"signature\":\"5ef8a5994e917c14479b31f690d4d2a023dfcc6059081504e3087977b21580ab\",\n  \"state\":\"completed\"\n}\n\nordered_payload = {\n  \"event_type\":\"ORDER.PAYMENT.RECEIVED\",\n  \"resource\":{\n    \"amount\":\"10.8200\",\n    \"currency\":\"EUR\",\n    \"reference\":\"1400012634\"\n  },\n  \"state\":\"completed\"\n}\n```\n\nOnce it's ordered, you should join it into a string, sign it and then base16 encode it:\n\n```\njoined_payload = “event_typeORDER.PAYMENT.RECEIVEDresourceamount10.8200resourcecurrencyEURresourcereference1400012634statecompleted\"\n\nsigned_payload  = :crypto.hmac(:sha256, secret, joined_payload)\nsignature = Base.encode16(signed_payload, case: :lower)\n```\n",
         "operationId": "createOrder",
         "parameters": [
           {
             "in": "body",
             "name": "order",
             "description": "The order information",
-            "required": true,
             "schema": {
               "type": "object",
               "properties": {
@@ -701,7 +949,11 @@
                         "customer": {
                           "$ref": "#/definitions/Customer"
                         }
-                      }
+                      },
+                      "required": [
+                        "order",
+                        "customer"
+                      ]
                     }
                   }
                 }
@@ -762,7 +1014,6 @@
             "in": "body",
             "name": "credentials",
             "description": "Your UTRUST credentials",
-            "required": true,
             "schema": {
               "type": "object",
               "properties": {
@@ -784,7 +1035,11 @@
                         "client_secret": {
                           "type": "string"
                         }
-                      }
+                      },
+                      "required": [
+                        "client_id",
+                        "client_secret"
+                      ]
                     }
                   }
                 }
@@ -806,10 +1061,44 @@
             }
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Store Session"
+        ],
+        "summary": "Revokes the token for the current session",
+        "operationId": "revokeStoreToken",
+        "responses": {
+          "200": {
+            "description": "Token revoked"
+          }
+        }
       }
     }
   },
   "definitions": {
+    "AccountSettings": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "example": "john@example.com"
+        },
+        "first_name": {
+          "type": "string",
+          "example": "John"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "tfa_active": {
+          "type": "boolean",
+          "description": "True if two factor authentication has been set up"
+        }
+      }
+    },
     "Amount": {
       "type": "object",
       "properties": {
@@ -831,14 +1120,23 @@
               "format": "decimal",
               "example": "39.00"
             },
-            "handling_fee": {
+            "shipping": {
+              "type": "string",
+              "format": "decimal",
+              "example": "1.00"
+            },
+            "tax": {
               "type": "string",
               "format": "decimal",
               "example": "1.00"
             }
           }
         }
-      }
+      },
+      "required": [
+        "total",
+        "currency"
+      ]
     },
     "Currency": {
       "type": "object",
@@ -894,7 +1192,13 @@
           "type": "string",
           "example": "US"
         }
-      }
+      },
+      "required": [
+        "first_name",
+        "last_name",
+        "email",
+        "country"
+      ]
     },
     "Error": {
       "type": "object",
@@ -942,8 +1246,7 @@
           "properties": {
             "return_url": {
               "type": "string",
-              "description": "(required) URL to redirect the user in case of everything going well",
-              "required": true,
+              "description": "URL to redirect the user in case of everything going well",
               "format": "url",
               "example": "http://example.com/return"
             },
@@ -959,7 +1262,10 @@
               "format": "url",
               "example": "http://example.com/callback"
             }
-          }
+          },
+          "required": [
+            "return_url"
+          ]
         },
         "line_items": {
           "type": "array",
@@ -967,7 +1273,13 @@
             "$ref": "#/definitions/LineItem"
           }
         }
-      }
+      },
+      "required": [
+        "reference",
+        "amount",
+        "return_urls",
+        "line_items"
+      ]
     },
     "LineItem": {
       "type": "object",
@@ -991,7 +1303,14 @@
           "minimum": 1,
           "example": 1
         }
-      }
+      },
+      "required": [
+        "sku",
+        "name",
+        "price",
+        "currency",
+        "quantity"
+      ]
     },
     "Order": {
       "type": "object",

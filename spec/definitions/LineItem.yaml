@@ -14,3 +14,9 @@ properties:
     type: "integer"
     minimum: 1
     example: 1
+required:
+  - "sku"
+  - "name"
+  - "price"
+  - "currency"
+  - "quantity"

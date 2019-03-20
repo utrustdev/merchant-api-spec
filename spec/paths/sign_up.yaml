@@ -9,7 +9,6 @@ post:
     - in: "body"
       name: "credentials"
       description: "Credentials you choose to be used on your account"
-      required: true
       schema:
         type: "object"
         properties:
@@ -29,6 +28,16 @@ post:
                     type: "string"
                   organization_name:
                     type: "string"
+                  first_name:
+                    type: "string"
+                  last_name:
+                    type: "string"
+                required:
+                  - "email"
+                  - "password"
+                  - "organization_name"
+                  - "first_name"
+                  - "last_name"
 
   responses:
     200:

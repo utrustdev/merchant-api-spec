@@ -10,7 +10,6 @@ post:
     - in: "body"
       name: "credentials"
       description: "Your UTRUST credentials"
-      required: true
       schema:
         type: "object"
         properties:
@@ -28,6 +27,9 @@ post:
                     format: "email"
                   password:
                     type: "string"
+                required:
+                  - "email"
+                  - "password"
 
   responses:
     200:
