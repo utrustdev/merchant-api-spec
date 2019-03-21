@@ -934,8 +934,8 @@ definitions:
       name:
         type: string
       price:
-        type: integer
-        example: 100
+        type: string
+        example: '100'
       currency:
         type: string
         example: USD
