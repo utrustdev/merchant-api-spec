@@ -1,0 +1,26 @@
+type: "object"
+properties:
+  id:
+    description: "Refund id"
+    allOf:
+      - $ref: "#/definitions/UUID"
+  type:
+    type: "string"
+    enum: ["refunds"]
+  attributes:
+    type: "object"
+    properties:
+      requested_amount:
+        type: "string"
+        description: "Value that was proposed"
+      requested_currency:
+        type: "string"
+        description: "Currency in which the refund was proposed (this will match the currency used by the store at the time of purchase)"
+      status:
+        type: "string"
+        enum: ["proposed", "accepted", "rejected", "complete"]
+      reason:
+        type: "string"
+        description: "Reason provided by the merchant to propose a refund"
+
+

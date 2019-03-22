@@ -67,6 +67,7 @@ tags:
   - name: "MultiFactor"
   - name: "Account Settings"
   - name: "Account Password"
+  - name: "Refunds"
 
 x-tagGroups:
   - name: Stores API
@@ -85,6 +86,9 @@ x-tagGroups:
     tags:
       - "Account Settings"
       - "Account Password"
+  - name: "Payments"
+    tags:
+      - "Refunds"
 
 securityDefinitions:
   JWT:

@@ -523,6 +523,43 @@
         }
       }
     },
+    "/payments/{payment_id}/refund": {
+      "get": {
+        "tags": [
+          "Refunds"
+        ],
+        "summary": "Returns a refund for the given payment, if there is one",
+        "operationId": "getPaymentRefund",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "payment_id",
+            "type": "string",
+            "format": "UUID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Refund details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Refund"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Refund not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
     "/settings/account": {
       "get": {
         "tags": [
@@ -1508,6 +1545,50 @@
         "description": {
           "type": "string",
           "example": "The payment transaction description."
+        }
+      }
+    },
+    "Refund": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "allOf": [
+            {
+              "$ref": "#/definitions/UUID"
+            }
+          ]
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "refunds"
+          ]
+        },
+        "attributes": {
+          "type": "object",
+          "properties": {
+            "requested_amount": {
+              "type": "string",
+              "description": "Value that was proposed"
+            },
+            "requested_currency": {
+              "type": "string",
+              "description": "Currency in which the refund was proposed (this will match the currency used by the store at the time of purchase)"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "proposed",
+                "accepted",
+                "rejected",
+                "complete"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "description": "Reason provided by the merchant to propose a refund"
+            }
+          }
         }
       }
     },
