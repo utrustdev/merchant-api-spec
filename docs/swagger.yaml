@@ -1,7 +1,7 @@
 swagger: '2.0'
 schemes:
   - https
-host: merchants.api.pixels-utrust.com/api
+host: merchants.api.utrust.com/api
 basePath: /
 info:
   description: |
@@ -21,8 +21,7 @@ info:
 
     You can find the credentials needed in the merchant dashboard, in the
     Organization settings. In order to have access to it you must first sign up
-    at https://merchants.pixels-utrust.com/onboarding/sign-up. Note that you
-    should use a different email from what you used in the wallet.
+    at https://merchants.utrust.com/onboarding/sign-up.
 
     These credentials will grant many privileges within your UTRUST
     account, so be sure to keep them secure! Do not share them in publicly
@@ -66,6 +65,7 @@ tags:
   - name: MultiFactor
   - name: Account Settings
   - name: Account Password
+  - name: Refunds
 x-tagGroups:
   - name: Stores API
     tags:
@@ -83,6 +83,9 @@ x-tagGroups:
     tags:
       - Account Settings
       - Account Password
+  - name: Payments
+    tags:
+      - Refunds
 securityDefinitions:
   JWT:
     type: apiKey
@@ -383,6 +386,43 @@ paths:
           description: Refund not found
           schema:
             $ref: '#/definitions/Error'
+    post:
+      tags:
+        - Refunds
+      summary: Creates a refund proposal
+      description: 'As a merchant you can only propose refunds, it''s ultimately the buyer''s decision to either accept or reject it (within a reasonable timeframe). There can only be one active proposal at any given time, if you create a proposal and there was already one, the new one will take it''s place.'
+      operationId: createPaymentRefundProposal
+      parameters:
+        - in: body
+          name: refund proposal
+          description: Refund proposal to send to the buyer
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                      - refunds
+                  id:
+                    description: Refund id
+                    allOf:
+                      - $ref: '#/definitions/UUID'
+                  attributes:
+                    type: object
+                    properties:
+                      amount:
+                        type: string
+                      currency:
+                        type: string
+                        example: USD
+                      reason:
+                        type: string
+                    required:
+                      - amount
+                      - currency
   /settings/account:
     get:
       tags:
@@ -1100,6 +1140,7 @@ definitions:
     type: object
     properties:
       id:
+        description: Refund id
         allOf:
           - $ref: '#/definitions/UUID'
       type:

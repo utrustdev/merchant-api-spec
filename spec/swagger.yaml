@@ -1,7 +1,7 @@
 swagger: "2.0"
 schemes:
   - https
-host: "merchants.api.pixels-utrust.com/api"
+host: "merchants.api.utrust.com/api"
 basePath: /
 info:
   description: |
@@ -21,8 +21,7 @@ info:
 
     You can find the credentials needed in the merchant dashboard, in the
     Organization settings. In order to have access to it you must first sign up
-    at https://merchants.pixels-utrust.com/onboarding/sign-up. Note that you
-    should use a different email from what you used in the wallet.
+    at https://merchants.utrust.com/onboarding/sign-up.
 
     These credentials will grant many privileges within your UTRUST
     account, so be sure to keep them secure! Do not share them in publicly

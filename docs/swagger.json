@@ -3,10 +3,10 @@
   "schemes": [
     "https"
   ],
-  "host": "merchants.api.pixels-utrust.com/api",
+  "host": "merchants.api.utrust.com/api",
   "basePath": "/",
   "info": {
-    "description": "The UTRUST API is organized around\n[REST](https://en.wikipedia.org/wiki/Representational_state_transfer),\nparticularly using the [JSON:API spec](https://jsonapi.org/). Our API has\nresource-oriented URLs, returns JSON responses and uses standard HTTP\nresponse codes and verbs.\n\n# Authentication\n\nUTRUST offers JSON Web Tokens (JWT) authentication. We call our resource\nfor generating JWT [Sessions](#tag/Session) or [Store\nSessions](#tag/Store-Session) for the Stores.\n\n<!-- ReDoc-Inject: <security-definitions> -->\n\nYou can find the credentials needed in the merchant dashboard, in the\nOrganization settings. In order to have access to it you must first sign up\nat https://merchants.pixels-utrust.com/onboarding/sign-up. Note that you\nshould use a different email from what you used in the wallet.\n\nThese credentials will grant many privileges within your UTRUST\naccount, so be sure to keep them secure! Do not share them in publicly\naccessible areas such as GitHUB, client-side code, and so on.\n\nAll API requests must be made over HTTPS and with authentication.\n\n# Stores vs Merchant API\n\nThe UTRUST API is divided into two separate use cases, the [Stores\nAPI](#tag/Store-Order) which provides endpoints to be used by plugins or\nother integrations with your store.\n\nThe Merchants API is comprised by all the endpoints we use to power our\nMerchant dashboard. You make them public so that you can integrate with\nyour own system as you please, but we do recommend using our dashboard as\nmuch as possible, as we'll be sure to keep it up to date and as useful as\npossible.\n",
+    "description": "The UTRUST API is organized around\n[REST](https://en.wikipedia.org/wiki/Representational_state_transfer),\nparticularly using the [JSON:API spec](https://jsonapi.org/). Our API has\nresource-oriented URLs, returns JSON responses and uses standard HTTP\nresponse codes and verbs.\n\n# Authentication\n\nUTRUST offers JSON Web Tokens (JWT) authentication. We call our resource\nfor generating JWT [Sessions](#tag/Session) or [Store\nSessions](#tag/Store-Session) for the Stores.\n\n<!-- ReDoc-Inject: <security-definitions> -->\n\nYou can find the credentials needed in the merchant dashboard, in the\nOrganization settings. In order to have access to it you must first sign up\nat https://merchants.utrust.com/onboarding/sign-up.\n\nThese credentials will grant many privileges within your UTRUST\naccount, so be sure to keep them secure! Do not share them in publicly\naccessible areas such as GitHUB, client-side code, and so on.\n\nAll API requests must be made over HTTPS and with authentication.\n\n# Stores vs Merchant API\n\nThe UTRUST API is divided into two separate use cases, the [Stores\nAPI](#tag/Store-Order) which provides endpoints to be used by plugins or\nother integrations with your store.\n\nThe Merchants API is comprised by all the endpoints we use to power our\nMerchant dashboard. You make them public so that you can integrate with\nyour own system as you please, but we do recommend using our dashboard as\nmuch as possible, as we'll be sure to keep it up to date and as useful as\npossible.\n",
     "version": "1.0.0",
     "title": "UTRUST Merchant API",
     "contact": {
@@ -54,6 +54,9 @@
     },
     {
       "name": "Account Password"
+    },
+    {
+      "name": "Refunds"
     }
   ],
   "x-tagGroups": [
@@ -83,6 +86,12 @@
       "tags": [
         "Account Settings",
         "Account Password"
+      ]
+    },
+    {
+      "name": "Payments",
+      "tags": [
+        "Refunds"
       ]
     }
   ],
@@ -558,6 +567,64 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "Refunds"
+        ],
+        "summary": "Creates a refund proposal",
+        "description": "As a merchant you can only propose refunds, it's ultimately the buyer's decision to either accept or reject it (within a reasonable timeframe). There can only be one active proposal at any given time, if you create a proposal and there was already one, the new one will take it's place.",
+        "operationId": "createPaymentRefundProposal",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "refund proposal",
+            "description": "Refund proposal to send to the buyer",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "refunds"
+                      ]
+                    },
+                    "id": {
+                      "description": "Refund id",
+                      "allOf": [
+                        {
+                          "$ref": "#/definitions/UUID"
+                        }
+                      ]
+                    },
+                    "attributes": {
+                      "type": "object",
+                      "properties": {
+                        "amount": {
+                          "type": "string"
+                        },
+                        "currency": {
+                          "type": "string",
+                          "example": "USD"
+                        },
+                        "reason": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "amount",
+                        "currency"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
       }
     },
     "/settings/account": {
@@ -1552,6 +1619,7 @@
       "type": "object",
       "properties": {
         "id": {
+          "description": "Refund id",
           "allOf": [
             {
               "$ref": "#/definitions/UUID"
