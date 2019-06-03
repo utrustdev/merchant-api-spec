@@ -1336,11 +1336,13 @@
             }
           ],
           "example": {
-            "total": "100.00",
+            "total": "113.00",
             "currency": "USD",
             "details": {
               "subtotal": "98.00",
-              "handling_fee": "2.00"
+              "handling_fee": "2.00",
+              "shipping": "10.00",
+              "tax": "3.00"
             }
           }
         },
