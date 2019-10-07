@@ -48,7 +48,7 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   x-logo:
-    url: 'https://s2.coinmarketcap.com/static/img/coins/200x200/2320.png'
+    url: 'https://s3.eu-central-1.amazonaws.com/utrust-email-assets/utrust-logo-signature.png'
 externalDocs:
   description: Check out the repo
   url: 'https://github.com/utrustdev/merchant-api-spec'
