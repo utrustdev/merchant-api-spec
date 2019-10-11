@@ -1,0 +1,47 @@
+delete:
+  tags:
+    - MultiFactor
+  summary: Requests the deactivation for a user
+  operationId: multiFactorDeactivate
+  parameters:
+    - in: path
+      name: user_id
+      type: string
+      format: UUID
+      required: true
+    - in: body
+      name: tfa_activation
+      required: true
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - tfa_activation
+              attributes:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: '123456'
+  responses:
+    '200':
+      description: Multi factor activated
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - tfa_activation
+              id:
+                allOf:
+                  - $ref: '#/definitions/UUID'
+                description: The user uuid

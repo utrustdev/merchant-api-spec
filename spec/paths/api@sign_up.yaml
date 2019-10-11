@@ -1,0 +1,62 @@
+post:
+  tags:
+    - Account
+  summary: Creates an account
+  description: |
+    Provide details in order to create a merchant account
+  operationId: createAccount
+  parameters:
+    - in: body
+      name: credentials
+      description: Credentials you choose to be used on your account
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - account
+              attributes:
+                type: object
+                properties:
+                  email:
+                    type: string
+                    format: email
+                  password:
+                    type: string
+                  organization_name:
+                    type: string
+                  first_name:
+                    type: string
+                  last_name:
+                    type: string
+                required:
+                  - email
+                  - password
+                  - organization_name
+                  - first_name
+                  - last_name
+  responses:
+    '200':
+      description: Account created
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              id:
+                $ref: '#/definitions/UUID'
+              type:
+                type: string
+                enum:
+                  - merchants
+              attributes:
+                type: object
+    '400':
+      description: Invalid credentials
+      schema:
+        $ref: '#/definitions/Error'

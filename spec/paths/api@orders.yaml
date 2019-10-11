@@ -1,0 +1,23 @@
+get:
+  tags:
+    - Order
+  summary: List orders for all the merchant's stores
+  operationId: listOrders
+  parameters:
+    - $ref: '#/headers/cursorParam'
+    - $ref: '#/headers/limitParam'
+    - in: query
+      name: include
+      type: string
+      enum:
+        - payment
+  responses:
+    '200':
+      description: List of orders for merchant
+      schema:
+        type: object
+        properties:
+          data:
+            type: array
+            items:
+              - $ref: '#/definitions/Order'
