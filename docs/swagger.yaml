@@ -35,7 +35,7 @@ info:
     our sandbox and production environments.
 
     For usage of the Stores API you will need to include the Api key on every request in
-    an `Authorization` header with the following format `Bearer: <api-key>`
+    an `Authorization` header as a Bearer token.
 
     ## Webhook Signatures
 
