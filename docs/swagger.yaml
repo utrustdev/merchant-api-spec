@@ -18,7 +18,7 @@ info:
     endpoints to be used by plugins or other integrations with your store.
     In addition to the API Key we provide a Webhooks Secret used to sign the webhook responses
     to the payments progress. That Webhook Secret is essential to ensure the payment progress is not 
-    spoofed by a thrid party.
+    spoofed by a third party.
 
 
     The Merchants API is comprised by all the endpoints we use to power our
