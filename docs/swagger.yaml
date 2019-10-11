@@ -40,7 +40,7 @@ info:
     ## Webhook Signatures
 
     To sync with the progress of Order payment we use webhooks. To ensure that the webhooks are 
-    comming from Utrust and not some unauthorized third party we create a signature or EVERY request
+    comming from Utrust and not some unauthorized third party we sign EVERY request.
     the signature is inluded in the webhook payload and can be reconstructed for verification.
     More details can be found in [Store Order](#tag/Store-Order) under Events.
 
