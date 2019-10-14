@@ -1,112 +1,168 @@
-swagger: "2.0"
+swagger: '2.0'
 schemes:
   - https
-host: "merchants.api.utrust.com/api"
+host: merchants.api.utrust.com
 basePath: /
 info:
-  description: |
-    The UTRUST API is organized around
+  description: >
+    The Utrust API is organized around
+
     [REST](https://en.wikipedia.org/wiki/Representational_state_transfer),
+
     particularly using the [JSON:API spec](https://jsonapi.org/). Our API has
+
     resource-oriented URLs, returns JSON responses and uses standard HTTP
+
     response codes and verbs.
+
 
     # Authentication
 
-    UTRUST offers JSON Web Tokens (JWT) authentication. We call our resource
-    for generating JWT [Sessions](#tag/Session) or [Store
-    Sessions](#tag/Store-Session) for the Stores.
+    The Utrust API is divided into two separate use cases.  
+
+
+    The [Stores API](#tag/Store-Order) which uses an API Key as authentication
+    and provides
+
+    endpoints to be used by plugins or other integrations with your store.
+
+    In addition to the API Key we provide a Webhooks Secret used to sign the
+    webhook responses
+
+    to the payments progress. That Webhook Secret is essential to ensure the
+    payment progress is not 
+
+    spoofed by a thrid party.
+
+
+
+    The Merchants API is comprised by all the endpoints we use to power our
+
+    Merchant dashboard. They are public so that you can integrate with
+
+    your own system as you please, but we do recommend using our dashboard as
+
+    much as possible, as we'll be sure to keep it up to date and as useful as
+
+    possible.
+
+
+    ## Stores API
+
+
+    To generate an API Key for the authentication of requests head to the
+    Merchant Dashboard and in the
+
+    Organizations tab view or generate your keys.
+
+    The generated key will have a `u_live` or `u_test` prefix in order to be
+    distinguished between 
+
+    our sandbox and production environments.
+
+
+    For usage of the Stores API you will need to include the Api key on every
+    request in
+
+    an `Authorization` header with the following format `Bearer: <api-key>`
+
+
+    ## Webhook Signatures
+
+
+    To sync with the progress of Order payment we use webhooks. To ensure that
+    the webhooks are 
+
+    comming from Utrust and not some unauthorized third party we create a
+    signature or EVERY request
+
+    the signature is inluded in the webhook payload and can be reconstructed for
+    verification.
+
+    More details can be found in [Store Order](#tag/Store-Order) under Events.
+
+
+
+
+    ## Merchant API
+
+
+
+    For the Merchant API we use a JSON Web Tokens (JWT) authentication. We call
+    our resource
+
+    for generating JWT [Sessions](#tag/Session)
+
 
     <!-- ReDoc-Inject: <security-definitions> -->
 
-    You can find the credentials needed in the merchant dashboard, in the
-    Organization settings. In order to have access to it you must first sign up
-    at https://merchants.utrust.com/onboarding/sign-up.
-
-    These credentials will grant many privileges within your UTRUST
-    account, so be sure to keep them secure! Do not share them in publicly
-    accessible areas such as GitHUB, client-side code, and so on.
 
     All API requests must be made over HTTPS and with authentication.
 
-    # Stores vs Merchant API
+    The generated token can be used to Authenticate your Merchant API requests
+    using the familiar 
 
-    The UTRUST API is divided into two separate use cases, the [Stores
-    API](#tag/Store-Order) which provides endpoints to be used by plugins or
-    other integrations with your store.
-
-    The Merchants API is comprised by all the endpoints we use to power our
-    Merchant dashboard. You make them public so that you can integrate with
-    your own system as you please, but we do recommend using our dashboard as
-    much as possible, as we'll be sure to keep it up to date and as useful as
-    possible.
-  version: "1.0.0"
-  title: "UTRUST Merchant API"
+    `Authorizarion` header with `Bearer: <token>`
+  version: 1.1.0
+  title: Utrust API
   contact:
-    email: "apiteam@utrust.com"
+    email: apiteam@utrust.com
   license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 externalDocs:
   description: Check out the repo
-  url: "https://github.com/utrustdev/merchant-api-spec"
+  url: 'https://github.com/utrustdev/merchant-api-spec'
 produces:
   - application/vnd.api+json
 consumes:
   - application/vnd.api+json
-
 tags:
-  - name: "Store Order"
-  - name: "Store Session"
-  - name: "Session"
-  - name: "Account"
-  - name: "Order"
-  - name: "MultiFactor"
-  - name: "Account Settings"
-  - name: "Account Password"
-  - name: "Refunds"
-
+  - name: Store Order
+  - name: Session
+  - name: Account
+  - name: Order
+  - name: MultiFactor
+  - name: Account Settings
+  - name: Account Password
+  - name: Refunds
 x-tagGroups:
   - name: Stores API
     tags:
-      - "Store Order"
-      - "Store Session"
+      - Store Order
   - name: Authentication
     tags:
-      - "Session"
-      - "Account"
-      - "MultiFactor"
+      - Session
+      - Account
+      - MultiFactor
   - name: Orders
     tags:
-      - "Order"
+      - Order
   - name: Settings
     tags:
-      - "Account Settings"
-      - "Account Password"
-  - name: "Payments"
+      - Account Settings
+      - Account Password
+  - name: Payments
     tags:
-      - "Refunds"
-
+      - Refunds
 securityDefinitions:
   JWT:
-    type: "apiKey"
-    in: "header"
-    name: "Authorization: Bearer <token>"
-    description: "You can create a JSON Web Token (JWT) via our Sessions resource"
-
+    type: apiKey
+    in: header
+    name: 'Authorization: Bearer <token>'
+    description: You can create a JSON Web Token (JWT) via our Sessions resource
 security:
   - JWT: []
-
 headers:
   cursorParam:
     in: query
     name: cursor
-    description: "Specifies where to start fetching data from"
+    description: Specifies where to start fetching data from
     type: string
   limitParam:
     in: query
     name: limit
-    description: "The maximum number of results to return per call"
+    description: The maximum number of results to return per call
     type: integer
     minimum: 1
     maximum: 100

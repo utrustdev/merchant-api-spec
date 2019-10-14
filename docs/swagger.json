@@ -3,12 +3,12 @@
   "schemes": [
     "https"
   ],
-  "host": "merchants.api.utrust.com/api",
+  "host": "merchants.api.utrust.com",
   "basePath": "/",
   "info": {
-    "description": "The UTRUST API is organized around\n[REST](https://en.wikipedia.org/wiki/Representational_state_transfer),\nparticularly using the [JSON:API spec](https://jsonapi.org/). Our API has\nresource-oriented URLs, returns JSON responses and uses standard HTTP\nresponse codes and verbs.\n\n# Authentication\n\nUTRUST offers JSON Web Tokens (JWT) authentication. We call our resource\nfor generating JWT [Sessions](#tag/Session) or [Store\nSessions](#tag/Store-Session) for the Stores.\n\n<!-- ReDoc-Inject: <security-definitions> -->\n\nYou can find the credentials needed in the merchant dashboard, in the\nOrganization settings. In order to have access to it you must first sign up\nat https://merchants.utrust.com/onboarding/sign-up.\n\nThese credentials will grant many privileges within your UTRUST\naccount, so be sure to keep them secure! Do not share them in publicly\naccessible areas such as GitHUB, client-side code, and so on.\n\nAll API requests must be made over HTTPS and with authentication.\n\n# Stores vs Merchant API\n\nThe UTRUST API is divided into two separate use cases, the [Stores\nAPI](#tag/Store-Order) which provides endpoints to be used by plugins or\nother integrations with your store.\n\nThe Merchants API is comprised by all the endpoints we use to power our\nMerchant dashboard. You make them public so that you can integrate with\nyour own system as you please, but we do recommend using our dashboard as\nmuch as possible, as we'll be sure to keep it up to date and as useful as\npossible.\n",
-    "version": "1.0.0",
-    "title": "UTRUST Merchant API",
+    "description": "The Utrust API is organized around\n[REST](https://en.wikipedia.org/wiki/Representational_state_transfer),\nparticularly using the [JSON:API spec](https://jsonapi.org/). Our API has\nresource-oriented URLs, returns JSON responses and uses standard HTTP\nresponse codes and verbs.\n\n# Authentication\nThe Utrust API is divided into two separate use cases.  \n\nThe [Stores API](#tag/Store-Order) which uses an API Key as authentication and provides\nendpoints to be used by plugins or other integrations with your store.\nIn addition to the API Key we provide a Webhooks Secret used to sign the webhook responses\nto the payments progress. That Webhook Secret is essential to ensure the payment progress is not \nspoofed by a thrid party.\n\n\nThe Merchants API is comprised by all the endpoints we use to power our\nMerchant dashboard. They are public so that you can integrate with\nyour own system as you please, but we do recommend using our dashboard as\nmuch as possible, as we'll be sure to keep it up to date and as useful as\npossible.\n\n## Stores API\n\nTo generate an API Key for the authentication of requests head to the Merchant Dashboard and in the\nOrganizations tab view or generate your keys.\nThe generated key will have a `u_live` or `u_test` prefix in order to be distinguished between \nour sandbox and production environments.\n\nFor usage of the Stores API you will need to include the Api key on every request in\nan `Authorization` header with the following format `Bearer: <api-key>`\n\n## Webhook Signatures\n\nTo sync with the progress of Order payment we use webhooks. To ensure that the webhooks are \ncomming from Utrust and not some unauthorized third party we create a signature or EVERY request\nthe signature is inluded in the webhook payload and can be reconstructed for verification.\nMore details can be found in [Store Order](#tag/Store-Order) under Events.\n\n\n\n## Merchant API\n\n\nFor the Merchant API we use a JSON Web Tokens (JWT) authentication. We call our resource\nfor generating JWT [Sessions](#tag/Session)\n\n<!-- ReDoc-Inject: <security-definitions> -->\n\nAll API requests must be made over HTTPS and with authentication.\nThe generated token can be used to Authenticate your Merchant API requests using the familiar \n`Authorizarion` header with `Bearer: <token>`\n",
+    "version": "1.1.0",
+    "title": "Utrust API",
     "contact": {
       "email": "apiteam@utrust.com"
     },
@@ -30,9 +30,6 @@
   "tags": [
     {
       "name": "Store Order"
-    },
-    {
-      "name": "Store Session"
     },
     {
       "name": "Session"
@@ -60,8 +57,7 @@
     {
       "name": "Stores API",
       "tags": [
-        "Store Order",
-        "Store Session"
+        "Store Order"
       ]
     },
     {
@@ -106,7 +102,7 @@
     }
   ],
   "paths": {
-    "/multi_factor_auth/tfa_activation": {
+    "/api/multi_factor_auth/tfa_activation": {
       "post": {
         "tags": [
           "MultiFactor"
@@ -176,7 +172,7 @@
         }
       }
     },
-    "/multi_factor_auth/tfa_activation/{user_id}": {
+    "/api/multi_factor_auth/tfa_activation/{user_id}": {
       "delete": {
         "tags": [
           "MultiFactor"
@@ -253,7 +249,7 @@
         }
       }
     },
-    "/multi_factor_auth/tfa_secret": {
+    "/api/multi_factor_auth/tfa_secret": {
       "post": {
         "tags": [
           "MultiFactor"
@@ -334,7 +330,7 @@
         }
       }
     },
-    "/multi_factor_auth/tfa_secret/{user_id}": {
+    "/api/multi_factor_auth/tfa_secret/{user_id}": {
       "post": {
         "tags": [
           "MultiFactor"
@@ -432,7 +428,7 @@
         }
       }
     },
-    "/orders": {
+    "/api/orders": {
       "get": {
         "tags": [
           "Order"
@@ -484,7 +480,7 @@
         }
       }
     },
-    "/orders/{order_id}": {
+    "/api/orders/{order_id}": {
       "get": {
         "tags": [
           "Order"
@@ -529,7 +525,7 @@
         }
       }
     },
-    "/payments/{payment_id}/refund": {
+    "/api/payments/{payment_id}/refund": {
       "get": {
         "tags": [
           "Refunds"
@@ -621,10 +617,29 @@
               }
             }
           }
-        ]
+        ],
+        "responses": {
+          "200": {
+            "description": "Refund details",
+            "schema": {
+              "type": "array",
+              "properties": {
+                "data": {
+                  "$ref": "#/definitions/Refund"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Refund not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
       }
     },
-    "/settings/account": {
+    "/api/settings/account": {
       "get": {
         "tags": [
           "Account Settings"
@@ -748,7 +763,7 @@
         }
       }
     },
-    "/settings/password": {
+    "/api/settings/password": {
       "patch": {
         "tags": [
           "Account Password"
@@ -845,7 +860,7 @@
         }
       }
     },
-    "/sign_in": {
+    "/api/sign_in": {
       "post": {
         "tags": [
           "Session"
@@ -908,7 +923,7 @@
         }
       }
     },
-    "/sign_out": {
+    "/api/sign_out": {
       "delete": {
         "tags": [
           "Session"
@@ -922,7 +937,7 @@
         }
       }
     },
-    "/sign_up": {
+    "/api/sign_up": {
       "post": {
         "tags": [
           "Account"
@@ -1016,7 +1031,7 @@
         }
       }
     },
-    "/stores/orders": {
+    "/api/stores/orders": {
       "post": {
         "tags": [
           "Store Order"
@@ -1098,80 +1113,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/stores/session": {
-      "post": {
-        "tags": [
-          "Store Session"
-        ],
-        "summary": "Generate a valid token for this session",
-        "description": "Use your credentials to generate a JWT that you will\nneed to perform any authenticated request on the API\n",
-        "operationId": "generateStoreToken",
-        "parameters": [
-          {
-            "in": "body",
-            "name": "credentials",
-            "description": "Your UTRUST credentials",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "enum": [
-                        "session"
-                      ]
-                    },
-                    "attributes": {
-                      "type": "object",
-                      "properties": {
-                        "client_id": {
-                          "type": "string"
-                        },
-                        "client_secret": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "client_id",
-                        "client_secret"
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Token generated",
-            "schema": {
-              "$ref": "#/definitions/Token"
-            }
-          },
-          "401": {
-            "description": "Invalid credentials",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Store Session"
-        ],
-        "summary": "Revokes the token for the current session",
-        "operationId": "revokeStoreToken",
-        "responses": {
-          "200": {
-            "description": "Token revoked"
           }
         }
       }

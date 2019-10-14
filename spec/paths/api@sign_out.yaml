@@ -1,0 +1,8 @@
+delete:
+  tags:
+    - Session
+  summary: Revokes the token for the current session
+  operationId: revokeToken
+  responses:
+    '200':
+      description: Token revoked

@@ -1,7 +1,7 @@
 get:
   tags:
-    - "Order"
-  summary: "Show order details"
+    - Order
+  summary: Show order details
   operationId: showOrderDetails
   parameters:
     - in: path
@@ -12,15 +12,16 @@ get:
     - in: query
       name: include
       type: string
-      enum: ["payments"]
+      enum:
+        - payments
   responses:
     '200':
       description: Order details
       schema:
-        type: "object"
+        type: object
         properties:
           data:
-            $ref: "#/definitions/Order"
+            $ref: '#/definitions/Order'
     '404':
       description: Order not found
       schema:

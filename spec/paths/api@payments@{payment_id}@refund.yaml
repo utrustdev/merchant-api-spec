@@ -1,0 +1,76 @@
+get:
+  tags:
+    - Refunds
+  summary: 'Returns a refund for the given payment, if there is one'
+  operationId: getPaymentRefund
+  parameters:
+    - in: path
+      name: payment_id
+      type: string
+      format: UUID
+      required: true
+  responses:
+    '200':
+      description: Refund details
+      schema:
+        type: object
+        properties:
+          data:
+            $ref: '#/definitions/Refund'
+    '404':
+      description: Refund not found
+      schema:
+        $ref: '#/definitions/Error'
+post:
+  tags:
+    - Refunds
+  summary: Creates a refund proposal
+  description: >-
+    As a merchant you can only propose refunds, it's ultimately the buyer's
+    decision to either accept or reject it (within a reasonable timeframe).
+    There can only be one active proposal at any given time, if you create a
+    proposal and there was already one, the new one will take it's place.
+  operationId: createPaymentRefundProposal
+  parameters:
+    - in: body
+      name: refund proposal
+      description: Refund proposal to send to the buyer
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - refunds
+              id:
+                description: Refund id
+                allOf:
+                  - $ref: '#/definitions/UUID'
+              attributes:
+                type: object
+                properties:
+                  amount:
+                    type: string
+                  currency:
+                    type: string
+                    example: USD
+                  reason:
+                    type: string
+                required:
+                  - amount
+                  - currency
+  responses:
+    '200':
+      description: Refund details
+      schema:
+        type: array
+        properties:
+          data:
+            $ref: '#/definitions/Refund'
+    '404':
+      description: Refund not found
+      schema:
+        $ref: '#/definitions/Error'

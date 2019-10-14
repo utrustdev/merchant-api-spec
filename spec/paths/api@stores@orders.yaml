@@ -1,39 +1,61 @@
 post:
   tags:
-    - "Store Order"
-  summary: "Create an order"
-  description: |
+    - Store Order
+  summary: Create an order
+  description: >
     Create a new order for payment processing. Returns a url to a page where a
+
     buyer can fulfill the payment for that order.
+
 
     ### Events
 
+
     Events are our way of letting you know when something interesting happens
+
     with an order. For example, when a payment for an order is confirmed, we
+
     create a `ORDER.PAYMENT.RECEIVED` event.
 
+
     We communicate these events via a webhooks system, which are sent to the
+
     URL you provide us as the callback URL for the order. We will retry to send
+
     you the event for 10 times or until we get a response with a 200 status
+
     code. If none of these happens, the event notification will be lost.
+
 
     List of events:
 
+
     * `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed
+
 
     #### Verifying events
 
+
     Since these events are sent from us to you, you might want to verify that
+
     they were not tampered with in the process. To allow for that, we sign
+
     every event with HMAC SHA256, using the client secret for your store as the
+
     signing key. You can then use the client id to verify it.
 
+
     We order the payload for each event, so that we can guarantee it will
+
     always be the same. To do this on your side you should first remove the
+
     signature field, and then recursively order each field alphabetically by
+
     its name. For example:
 
+
     ```
+
     payload = {
       "event_type":"ORDER.PAYMENT.RECEIVED",
       "resource":{
@@ -45,6 +67,7 @@ post:
       "state":"completed"
     }
 
+
     ordered_payload = {
       "event_type":"ORDER.PAYMENT.RECEIVED",
       "resource":{
@@ -54,60 +77,70 @@ post:
       },
       "state":"completed"
     }
-    ```
-
-    Once it's ordered, you should join it into a string, sign it and then base16 encode it:
 
     ```
-    joined_payload = “event_typeORDER.PAYMENT.RECEIVEDresourceamount10.8200resourcecurrencyEURresourcereference1400012634statecompleted"
+
+
+    Once it's ordered, you should join it into a string, sign it and then base16
+    encode it:
+
+
+    ```
+
+    joined_payload =
+    “event_typeORDER.PAYMENT.RECEIVEDresourceamount10.8200resourcecurrencyEURresourcereference1400012634statecompleted"
+
 
     signed_payload  = :crypto.hmac(:sha256, secret, joined_payload)
-    signature = Base.encode16(signed_payload, case: :lower)
-    ```
 
-  operationId: "createOrder"
+    signature = Base.encode16(signed_payload, case: :lower)
+
+    ```
+  operationId: createOrder
   parameters:
-    - in: "body"
-      name: "order"
-      description: "The order information"
+    - in: body
+      name: order
+      description: The order information
       schema:
-        type: "object"
+        type: object
         properties:
           data:
-            type: "object"
+            type: object
             properties:
               type:
-                type: "string"
-                enum: ["orders"]
+                type: string
+                enum:
+                  - orders
               attributes:
-                type: "object"
+                type: object
                 properties:
                   order:
-                    $ref: "#/definitions/OrderInput"
+                    $ref: '#/definitions/OrderInput'
                   customer:
-                    $ref: "#/definitions/Customer"
+                    $ref: '#/definitions/Customer'
                 required:
-                  - "order"
-                  - "customer"
+                  - order
+                  - customer
   responses:
-    201:
-      description: "Order created"
+    '201':
+      description: Order created
       schema:
-        type: "object"
+        type: object
         properties:
           data:
-            type: "object"
+            type: object
             properties:
               type:
-                type: "string"
-                enum: ["orders_redirect"]
+                type: string
+                enum:
+                  - orders_redirect
               id:
                 allOf:
-                  - $ref: "#/definitions/UUID"
+                  - $ref: '#/definitions/UUID'
               attributes:
-                type: "object"
+                type: object
                 properties:
                   redirect_url:
-                    type: "string"
-                    format: "URL"
-                    example: "https://buyers.utrust.com?uuid=some-uuid"
+                    type: string
+                    format: URL
+                    example: 'https://buyers.utrust.com?uuid=some-uuid'
