@@ -24,6 +24,10 @@ properties:
         type: "string"
         format: "decimal"
         example: "1.00"
+      discount:
+        type: "string"
+        format: "decimal"
+        example: "2.00"
 required:
   - "total"
   - "currency"

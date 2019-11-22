@@ -1,0 +1,55 @@
+post:
+  tags:
+    - Store Order
+  summary: Create an order
+  description: >
+    Create a new order for payment processing. Returns a url to a page where a
+    buyer can fulfill the payment for that order.
+  operationId: createOrder
+  parameters:
+    - in: body
+      name: order
+      description: The order information
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - orders
+              attributes:
+                type: object
+                properties:
+                  order:
+                    $ref: "#/definitions/OrderInput"
+                  customer:
+                    $ref: "#/definitions/Customer"
+                required:
+                  - order
+                  - customer
+  responses:
+    "201":
+      description: Order created
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - orders_redirect
+              id:
+                allOf:
+                  - $ref: "#/definitions/UUID"
+              attributes:
+                type: object
+                properties:
+                  redirect_url:
+                    type: string
+                    format: URL
+                    example: "https://buyers.utrust.com?uuid=some-uuid"

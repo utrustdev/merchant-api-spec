@@ -27,6 +27,7 @@ properties:
     example: "10001"
   country:
     type: "string"
+    description: "Format [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)"
     example: "US"
 required:
   - "first_name"

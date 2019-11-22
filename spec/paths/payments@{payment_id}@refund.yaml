@@ -1,7 +1,7 @@
 get:
   tags:
-    - Refunds
-  summary: 'Returns a refund for the given payment, if there is one'
+    - Refund
+  summary: "Returns a refund for the given payment, if there is one"
   operationId: getPaymentRefund
   parameters:
     - in: path
@@ -10,20 +10,20 @@ get:
       format: UUID
       required: true
   responses:
-    '200':
+    "200":
       description: Refund details
       schema:
         type: object
         properties:
           data:
-            $ref: '#/definitions/Refund'
-    '404':
+            $ref: "#/definitions/Refund"
+    "404":
       description: Refund not found
       schema:
-        $ref: '#/definitions/Error'
+        $ref: "#/definitions/Error"
 post:
   tags:
-    - Refunds
+    - Refund
   summary: Creates a refund proposal
   description: >-
     As a merchant you can only propose refunds, it's ultimately the buyer's
@@ -48,7 +48,7 @@ post:
               id:
                 description: Refund id
                 allOf:
-                  - $ref: '#/definitions/UUID'
+                  - $ref: "#/definitions/UUID"
               attributes:
                 type: object
                 properties:
@@ -63,14 +63,14 @@ post:
                   - amount
                   - currency
   responses:
-    '200':
+    "200":
       description: Refund details
       schema:
         type: array
         properties:
           data:
-            $ref: '#/definitions/Refund'
-    '404':
+            $ref: "#/definitions/Refund"
+    "404":
       description: Refund not found
       schema:
-        $ref: '#/definitions/Error'
+        $ref: "#/definitions/Error"

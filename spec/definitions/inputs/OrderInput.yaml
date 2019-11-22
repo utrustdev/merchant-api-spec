@@ -11,9 +11,9 @@ properties:
       currency: "USD"
       details:
         subtotal: "98.00"
-        handling_fee: "2.00"
         shipping: "10.00"
         tax: "3.00"
+        discount: "2.00"
   return_urls:
     type: "object"
     description: |

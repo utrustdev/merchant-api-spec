@@ -16,6 +16,3 @@ properties:
             type: "string"
             format: "JWT"
             example: "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJtZXJjaGFudF9jbGllbnQiLCJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE1NzcxMDA2MTMsImlhdCI6MTU3NDY4MTQxMywiaXNzIjoibWVyY2hhbnRfY2xpZW50IiwianRpIjoiYTFkNmRkYWEtZjFlYi00NjBkLWFiMmEtMzM4Y2NhNzcyZjBkIiwibmJmIjoxNTc0NjgxNDEyLCJyb2xlIjoib3duZXIiLCJzdWIiOiJVc2VyOmE1NzEyNzNhLThmOTEtNDIwOC04MTBkLTcwOGZjYzEyZmJmNSIsInR5cCI6ImFjY2VzcyJ9.QjPZNPlasZfCON-o-mVKQpHOVafVe7T-GLAeDBgaRJYM_DYroYDU3g-G0_WZ0Rj8x_a4YY_lXTjLsfVEkPv5kg"
-          tfa_missing:
-            type: "boolean"
-            description: "Optional, only sent if TFA enabled"

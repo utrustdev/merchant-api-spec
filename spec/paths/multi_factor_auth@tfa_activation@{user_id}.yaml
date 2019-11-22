@@ -1,6 +1,6 @@
 delete:
   tags:
-    - MultiFactor
+    - Account MultiFactor
   summary: Requests the deactivation for a user
   operationId: multiFactorDeactivate
   parameters:
@@ -27,9 +27,9 @@ delete:
                 properties:
                   code:
                     type: string
-                    example: '123456'
+                    example: "123456"
   responses:
-    '200':
+    "200":
       description: Multi factor activated
       schema:
         type: object
@@ -43,5 +43,5 @@ delete:
                   - tfa_activation
               id:
                 allOf:
-                  - $ref: '#/definitions/UUID'
+                  - $ref: "#/definitions/UUID"
                 description: The user uuid

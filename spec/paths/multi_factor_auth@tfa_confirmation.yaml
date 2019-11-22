@@ -1,0 +1,33 @@
+post:
+  tags:
+    - Account MultiFactor
+  summary: Confirm the 2FA credential
+  description: >-
+    When the user has 2FA enabled, it should call this endpoint with the current JWT session token.
+    Then, the token in this response should replace the previous one in the next requests.
+  operationId: multiFactorConfirmation
+  parameters:
+    - in: body
+      name: tfa_confirmation
+      required: true
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - tfa_confirmation
+              attributes:
+                type: object
+                properties:
+                  code:
+                    type: string
+                    example: "123456"
+  responses:
+    "200":
+      description: Token generated
+      schema:
+        $ref: "#/definitions/TokenAfterTFA"

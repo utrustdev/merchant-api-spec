@@ -9,7 +9,7 @@ post:
   parameters:
     - in: body
       name: credentials
-      description: Your UTRUST credentials
+      description: Your Utrust credentials
       schema:
         type: object
         properties:
@@ -26,17 +26,26 @@ post:
                   email:
                     type: string
                     format: email
+                    example: "john@example.com"
                   password:
                     type: string
                 required:
                   - email
                   - password
   responses:
-    '200':
+    "200":
       description: Token generated
       schema:
-        $ref: '#/definitions/Token'
-    '401':
+        $ref: "#/definitions/Token"
+    "401":
       description: Invalid credentials
       schema:
-        $ref: '#/definitions/Error'
+        $ref: "#/definitions/Error"
+delete:
+  tags:
+    - Session
+  summary: Revokes the token for the current session
+  operationId: revokeToken
+  responses:
+    "200":
+      description: Token revoked

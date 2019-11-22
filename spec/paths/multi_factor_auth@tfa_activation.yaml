@@ -1,6 +1,6 @@
 post:
   tags:
-    - MultiFactor
+    - Account MultiFactor
   summary: Requests the activation for a user
   operationId: multiFactorActivate
   parameters:
@@ -22,9 +22,9 @@ post:
                 properties:
                   code:
                     type: string
-                    example: '123456'
+                    example: "123456"
   responses:
-    '200':
+    "200":
       description: Multi factor activated
       schema:
         type: object
@@ -38,5 +38,5 @@ post:
                   - tfa_activation
               id:
                 allOf:
-                  - $ref: '#/definitions/UUID'
+                  - $ref: "#/definitions/UUID"
                 description: The user uuid

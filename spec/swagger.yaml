@@ -1,158 +1,188 @@
-swagger: '2.0'
+swagger: "2.0"
 schemes:
   - https
-host: merchants.api.utrust.com
-basePath: /
+host: merchants.api.utrust.com/
+basePath: api/
+x-servers:
+  - url: https://merchants.api.utrust.com/api/
+    description: Production server (live)
+  - url: https://merchants.api.sandbox-utrust.com/api/
+    description: Sandbox server (test)
 info:
-  description: >
-    The Utrust API is organized around
-
-    [REST](https://en.wikipedia.org/wiki/Representational_state_transfer),
-
-    particularly using the [JSON:API spec](https://jsonapi.org/). Our API has
-
-    resource-oriented URLs, returns JSON responses and uses standard HTTP
-
-    response codes and verbs.
-
-
-    # Authentication
-
-    The Utrust API is divided into two separate use cases.  
-
-
-    The [Stores API](#tag/Store-Order) which uses an API Key as authentication
-    and provides
-
-    endpoints to be used by plugins or other integrations with your store.
-
-    In addition to the API Key we provide a Webhooks Secret used to sign the
-    webhook responses
-
-    to the payments progress. That Webhook Secret is essential to ensure the
-    payment progress is not 
-
-    spoofed by a thrid party.
-
-
-
-    The Merchants API is comprised by all the endpoints we use to power our
-
-    Merchant dashboard. They are public so that you can integrate with
-
-    your own system as you please, but we do recommend using our dashboard as
-
-    much as possible, as we'll be sure to keep it up to date and as useful as
-
-    possible.
-
-
-    ## Stores API
-
-
-    To generate an API Key for the authentication of requests head to the
-    Merchant Dashboard and in the
-
-    Organizations tab view or generate your keys.
-
-    The generated key will have a `u_live` or `u_test` prefix in order to be
-    distinguished between 
-
-    our sandbox and production environments.
-
-
-    For usage of the Stores API you will need to include the Api key on every
-    request in
-
-    an `Authorization` header with the following format `Bearer: <api-key>`
-
-
-    ## Webhook Signatures
-
-
-    To sync with the progress of Order payment we use webhooks. To ensure that
-    the webhooks are 
-
-    comming from Utrust and not some unauthorized third party we create a
-    signature or EVERY request
-
-    the signature is inluded in the webhook payload and can be reconstructed for
-    verification.
-
-    More details can be found in [Store Order](#tag/Store-Order) under Events.
-
-
-
-
-    ## Merchant API
-
-
-
-    For the Merchant API we use a JSON Web Tokens (JWT) authentication. We call
-    our resource
-
-    for generating JWT [Sessions](#tag/Session)
-
-
-    <!-- ReDoc-Inject: <security-definitions> -->
-
-
-    All API requests must be made over HTTPS and with authentication.
-
-    The generated token can be used to Authenticate your Merchant API requests
-    using the familiar 
-
-    `Authorizarion` header with `Bearer: <token>`
-  version: 1.1.0
+  x-logo:
+    url: "https://user-images.githubusercontent.com/1558992/69666315-f6775f80-1083-11ea-8482-3fa2a9e64de3.png"
+    backgroundColor: "#5b47ff"
   title: Utrust API
+  version: 1.1.0
   contact:
     email: apiteam@utrust.com
   license:
     name: Apache 2.0
-    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+  description: |
+    The Utrust API is organized around
+    [REST](https://en.wikipedia.org/wiki/Representational_state_transfer),
+    particularly using the [JSON:API spec](https://jsonapi.org/). Our API has
+    resource-oriented URLs, returns JSON responses and uses standard HTTP
+    response codes and verbs.
+
+    # Introduction
+
+    The Utrust API is divided into two separate use cases.  
+
+    The [Stores API](#tag/Store-Order) which uses an API Key as authentication and provides
+    endpoints to be used by plugins or other integrations with your store.
+    In addition to the API Key we provide a Webhooks Secret used to sign the webhook responses
+    to the payments progress. That Webhook Secret is essential to ensure the payment progress is not 
+    spoofed by a third party.
+
+    The [Merchants API](#tag/Session) is comprised by all the endpoints we use to power our
+    Merchant dashboard. They are public so that you can integrate with
+    your own system as you please, but we do recommend using our dashboard as
+    much as possible, as we'll be sure to keep it up to date and as useful as
+    possible.
+
+    # Authentication
+
+    Both APIs have different methods of authentication, which are explained below:
+    <!-- ReDoc-Inject: <security-definitions> -->
+
 externalDocs:
   description: Check out the repo
-  url: 'https://github.com/utrustdev/merchant-api-spec'
+  url: "https://github.com/utrustdev/merchant-api-spec"
 produces:
   - application/vnd.api+json
 consumes:
   - application/vnd.api+json
 tags:
   - name: Store Order
+  - name: Webhooks
+    description: |
+      To sync with the progress of Order payment we use webhooks. To ensure that the webhooks are 
+      comming from Utrust and not some unauthorized third party we create a signature or EVERY request
+      the signature is included in the webhook payload and can be reconstructed for verification.
+      More details can be found in [Store Order](#tag/Store-Order) under Events.
+
+      ### Events
+
+      Events are our way of letting you know when something interesting happens
+      with an order. For example, when a payment for an order is confirmed, we
+      create a `ORDER.PAYMENT.RECEIVED` event.
+
+      We communicate these events via a webhooks system, which are sent to the
+      URL you provide us as the callback URL for the order. We will retry to send
+      you the event for 10 times or until we get a response with a 200 status
+      code. If none of these happens, the event notification will be lost.
+
+      List of events:
+
+      * `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed
+      * `ORDER.PAYMENT.CANCELLED` - Triggered when the payment is cancelled
+      * `ORDER.PAYMENT.FAILED` - Triggered when the payment is failed
+
+      #### Verifying events
+
+      Since these events are sent from us to you, you might want to verify that
+      they were not tampered with in the process. To allow for that, we sign
+      every event with HMAC SHA256, using the client secret for your store as the
+      signing key. You can then use the client id to verify it.
+
+      We order the payload for each event, so that we can guarantee it will
+      always be the same. To do this on your side you should first remove the
+      signature field, and then recursively order each field alphabetically by
+      its name. For example:
+
+      ```
+      payload = {
+        "event_type":"ORDER.PAYMENT.RECEIVED",
+        "resource":{
+          "reference":"1400012634"
+          "amount":"10.8200",
+          "currency":"EUR",
+        },
+        "signature":"5ef8a5994e917c14479b31f690d4d2a023dfcc6059081504e3087977b21580ab",
+        "state":"completed"
+      }
+
+      ordered_payload = {
+        "event_type":"ORDER.PAYMENT.RECEIVED",
+        "resource":{
+          "amount":"10.8200",
+          "currency":"EUR",
+          "reference":"1400012634"
+        },
+        "state":"completed"
+      }
+      ```
+
+      Once it's ordered, you should join it into a string, sign it and then base16
+      encode it:
+
+      ```
+      joined_payload =
+      “event_typeORDER.PAYMENT.RECEIVEDresourceamount10.8200resourcecurrencyEURresourcereference1400012634statecompleted"
+      signed_payload = :crypto.hmac(:sha256, secret, joined_payload)
+      signature = Base.encode16(signed_payload, case: :lower)
+      ```
+
+      You can see an example of the signature validation function in PHP [here.](https://github.com/utrustdev/utrust-php/blob/e400f219b73cced5b184f2f15eded3c8654dce3c/src/Webhook/Event.php#L75)
+
+      #### Retries
+
+      If our HTTP request to your system fails, we will retry it again, every minute, for 10 minutes.
   - name: Session
   - name: Account
   - name: Order
-  - name: MultiFactor
-  - name: Account Settings
+  - name: Account MultiFactor
+    description: |
+      The multifactor activation has two steps:
+      1. Generating and retrieving a secret with [this endpoint.](#operation/multiFactorGenerateSecret)
+      2. Using the authenticator code (generated with the secret) activate it with [this endpoint.](#operation/multiFactorActivate)
   - name: Account Password
-  - name: Refunds
+  - name: Account Settings
+  - name: Refund
 x-tagGroups:
   - name: Stores API
     tags:
       - Store Order
-  - name: Authentication
+      - Webhooks
+  - name: Merchant API
     tags:
       - Session
       - Account
-      - MultiFactor
-  - name: Orders
-    tags:
-      - Order
-  - name: Settings
-    tags:
-      - Account Settings
+      - Account MultiFactor
       - Account Password
-  - name: Payments
-    tags:
-      - Refunds
+      - Account Settings
+      - Order
+      - Refund
 securityDefinitions:
-  JWT:
+  Stores API Authentication:
     type: apiKey
     in: header
-    name: 'Authorization: Bearer <token>'
-    description: You can create a JSON Web Token (JWT) via our Sessions resource
+    name: "Authorization: Bearer <api-key>"
+    description: |
+      To generate the API key for the authentication of requests, head to the Merchant Dashboard 
+      ([sandbox](https://merchants.sandbox-utrust.com) or [production](https://merchants.utrust.com)) and in the
+      Organizations tab view and generate your keys.
+      The generated key will have a `u_live` or `u_test` prefix in order to be distinguished between 
+      our sandbox and production environments, respectively.
+      You will also see the Webhooks secret which you will need to [verify the events signature](#tag/Webhooks), 
+      save it for later.
+
+      For usage of the Stores API you will need to include the API key on every request in
+      an `Authorization` header with the following format `Bearer: <api-key>`
+  Merchants API Authentication:
+    type: apiKey
+    in: header
+    name: "Authorization: Bearer <token>"
+    description: |
+      For the Merchant API we use a JSON Web Tokens (JWT) authentication. We call our resource
+      for generating JWT [Sessions](#tag/Session).
+      The generated token can be used to Authenticate your Merchant API requests using the familiar 
+      `Authorization` header with `Bearer: <token>`
 security:
-  - JWT: []
+  - Merchants API Authentication: []
+  - Stores API Authentication: []
 headers:
   cursorParam:
     in: query
