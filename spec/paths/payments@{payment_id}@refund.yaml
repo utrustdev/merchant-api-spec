@@ -3,6 +3,8 @@ get:
     - Refund
   summary: "Returns a refund for the given payment, if there is one"
   operationId: getPaymentRefund
+  security:
+    - Merchants_API_Authentication: []
   parameters:
     - in: path
       name: payment_id
@@ -31,6 +33,8 @@ post:
     There can only be one active proposal at any given time, if you create a
     proposal and there was already one, the new one will take it's place.
   operationId: createPaymentRefundProposal
+  security:
+    - Merchants_API_Authentication: []
   parameters:
     - in: body
       name: refund proposal

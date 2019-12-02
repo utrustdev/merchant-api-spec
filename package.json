@@ -1,6 +1,6 @@
 {
-  "name": "UTRUST-Merchant-openapi-spec",
-  "version": "0.0.1",
+  "name": "UTRUST-openapi-spec",
+  "version": "1.1.0",
   "dependencies": {
     "bower": "^1.7.7",
     "connect": "^3.4.1",
@@ -16,11 +16,9 @@
   },
   "private": true,
   "scripts": {
-    "deploy": "npm run build && deploy-to-gh-pages --update web_deploy",
     "build": "node ./scripts/build.js",
     "swagger": "swagger-repo",
     "test": "swagger-repo validate",
-    "start": "gulp serve",
-    "deploy-branch": "node ./scripts/deploy-branch.js"
+    "start": "gulp serve"
   }
 }

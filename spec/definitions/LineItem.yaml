@@ -2,18 +2,21 @@ type: "object"
 properties:
   sku:
     type: "string"
+    example: "tsh-6110"
   name:
     type: "string"
+    example: "T-Shirt White Large"
   price:
     type: "string"
     example: "100.00"
   currency:
     type: "string"
     example: "USD"
+    enum: ["EUR", "GBP", "USD"]
   quantity:
     type: "integer"
     minimum: 1
-    example: 1
+    example: 5
 required:
   - "sku"
   - "name"

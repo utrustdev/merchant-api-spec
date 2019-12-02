@@ -3,8 +3,10 @@ get:
     - Account Settings
   summary: Fetch the current account settings
   operationId: getAccountSettings
+  security:
+    - Merchants_API_Authentication: []
   responses:
-    '200':
+    "200":
       description: Account settings
       schema:
         type: object
@@ -18,9 +20,9 @@ get:
                   - orders_redirect
               id:
                 allOf:
-                  - $ref: '#/definitions/UUID'
+                  - $ref: "#/definitions/UUID"
               attributes:
-                $ref: '#/definitions/AccountSettings'
+                $ref: "#/definitions/AccountSettings"
 patch:
   tags:
     - Account Settings
@@ -43,7 +45,7 @@ patch:
               id:
                 description: The current user id
                 allOf:
-                  - $ref: '#/definitions/UUID'
+                  - $ref: "#/definitions/UUID"
               attributes:
                 type: object
                 properties:
@@ -55,7 +57,7 @@ patch:
                   - first_name
                   - last_name
   responses:
-    '200':
+    "200":
       description: Account settings
       schema:
         type: object
@@ -69,6 +71,6 @@ patch:
                   - orders_redirect
               id:
                 allOf:
-                  - $ref: '#/definitions/UUID'
+                  - $ref: "#/definitions/UUID"
               attributes:
-                $ref: '#/definitions/AccountSettings'
+                $ref: "#/definitions/AccountSettings"

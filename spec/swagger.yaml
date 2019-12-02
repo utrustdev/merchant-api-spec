@@ -146,7 +146,7 @@ x-tagGroups:
     tags:
       - Store Order
       - Webhooks
-  - name: Merchant API
+  - name: Merchants API
     tags:
       - Session
       - Account
@@ -156,7 +156,7 @@ x-tagGroups:
       - Order
       - Refund
 securityDefinitions:
-  Stores API Authentication:
+  Stores_API_Authentication:
     type: apiKey
     in: header
     name: "Authorization: Bearer <api-key>"
@@ -171,7 +171,7 @@ securityDefinitions:
 
       For usage of the Stores API you will need to include the API key on every request in
       an `Authorization` header with the following format `Bearer: <api-key>`
-  Merchants API Authentication:
+  Merchants_API_Authentication:
     type: apiKey
     in: header
     name: "Authorization: Bearer <token>"
@@ -181,8 +181,8 @@ securityDefinitions:
       The generated token can be used to Authenticate your Merchant API requests using the familiar 
       `Authorization` header with `Bearer: <token>`
 security:
-  - Merchants API Authentication: []
-  - Stores API Authentication: []
+  - Merchants_API_Authentication: []
+  - Stores_API_Authentication: []
 headers:
   cursorParam:
     in: query

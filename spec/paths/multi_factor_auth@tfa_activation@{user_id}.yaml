@@ -3,6 +3,8 @@ delete:
     - Account MultiFactor
   summary: Requests the deactivation for a user
   operationId: multiFactorDeactivate
+  security:
+    - Merchants_API_Authentication: []
   parameters:
     - in: path
       name: user_id

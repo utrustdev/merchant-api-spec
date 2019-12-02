@@ -46,6 +46,8 @@ delete:
     - Session
   summary: Revokes the token for the current session
   operationId: revokeToken
+  security:
+    - Merchants_API_Authentication: []
   responses:
     "200":
       description: Token revoked

@@ -2,12 +2,12 @@ type: "object"
 properties:
   reference:
     type: "string"
-    example: "order-1"
+    example: "order-1977"
   amount:
     allOf:
       - $ref: "#/definitions/Amount"
     example:
-      total: "113.00"
+      total: "109.00"
       currency: "USD"
       details:
         subtotal: "98.00"

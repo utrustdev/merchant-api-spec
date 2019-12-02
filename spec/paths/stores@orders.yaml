@@ -6,6 +6,8 @@ post:
     Create a new order for payment processing. Returns a url to a page where a
     buyer can fulfill the payment for that order.
   operationId: createOrder
+  security:
+    - Stores_API_Authentication: []
   parameters:
     - in: body
       name: order
@@ -52,4 +54,4 @@ post:
                   redirect_url:
                     type: string
                     format: URL
-                    example: "https://buyers.utrust.com?uuid=some-uuid"
+                    example: "https://pay.utrust.com?uuid=some-uuid"

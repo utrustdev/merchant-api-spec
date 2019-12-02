@@ -6,6 +6,8 @@ post:
     When the user has 2FA enabled, it should call this endpoint with the current JWT session token.
     Then, the token in this response should replace the previous one in the next requests.
   operationId: multiFactorConfirmation
+  security:
+    - Merchants_API_Authentication: []
   parameters:
     - in: body
       name: tfa_confirmation

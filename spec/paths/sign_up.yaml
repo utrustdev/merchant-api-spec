@@ -5,6 +5,8 @@ post:
   description: |
     Provide details in order to create a merchant account
   operationId: createAccount
+  security:
+    - Merchants_API_Authentication: []
   parameters:
     - in: body
       name: credentials
@@ -40,7 +42,7 @@ post:
                   - first_name
                   - last_name
   responses:
-    '200':
+    "200":
       description: Account created
       schema:
         type: object
@@ -49,14 +51,14 @@ post:
             type: object
             properties:
               id:
-                $ref: '#/definitions/UUID'
+                $ref: "#/definitions/UUID"
               type:
                 type: string
                 enum:
                   - merchants
               attributes:
                 type: object
-    '400':
+    "400":
       description: Invalid credentials
       schema:
-        $ref: '#/definitions/Error'
+        $ref: "#/definitions/Error"

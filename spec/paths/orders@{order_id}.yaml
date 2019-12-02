@@ -3,6 +3,8 @@ get:
     - Order
   summary: Show order details
   operationId: showOrderDetails
+  security:
+    - Merchants_API_Authentication: []
   parameters:
     - in: path
       name: order_id
@@ -15,14 +17,14 @@ get:
       enum:
         - payments
   responses:
-    '200':
+    "200":
       description: Order details
       schema:
         type: object
         properties:
           data:
-            $ref: '#/definitions/Order'
-    '404':
+            $ref: "#/definitions/Order"
+    "404":
       description: Order not found
       schema:
-        $ref: '#/definitions/Error'
+        $ref: "#/definitions/Error"
