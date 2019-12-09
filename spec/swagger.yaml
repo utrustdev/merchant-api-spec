@@ -10,8 +10,8 @@ x-servers:
     description: Sandbox server (test)
 info:
   x-logo:
-    url: "https://user-images.githubusercontent.com/1558992/69666315-f6775f80-1083-11ea-8482-3fa2a9e64de3.png"
-    backgroundColor: "#5b47ff"
+    url: "https://user-images.githubusercontent.com/1558992/70169521-edf5d900-16c2-11ea-8069-68db96735f0b.png"
+    backgroundColor: "#FAFAFA"
   title: Utrust API
   version: 1.1.0
   contact:
@@ -61,7 +61,8 @@ tags:
       To sync with the progress of Order payment we use webhooks. To ensure that the webhooks are 
       comming from Utrust and not some unauthorized third party we create a signature or EVERY request
       the signature is included in the webhook payload and can be reconstructed for verification.
-      More details can be found in [Store Order](#tag/Store-Order) under Events.
+      You can use our [libraries](https://docs.utrust.com/#section/Libraries) for this or you code it 
+      yourself manually.
 
       ### Events
 
@@ -127,7 +128,12 @@ tags:
 
       You can see an example of the signature validation function in PHP [here.](https://github.com/utrustdev/utrust-php/blob/e400f219b73cced5b184f2f15eded3c8654dce3c/src/Webhook/Event.php#L75)
 
-      #### Retries
+      #### Response and retries
+
+      We will be excepting your response status to be:
+      * If everything went well → status: **200 OK**; with no body or a valid JSON (e.g. `{ success: true }`);
+      * If something went wrong → status: **500 Internal Server Error**;
+
 
       If our HTTP request to your system fails, we will retry it again, every minute, for 10 minutes.
   - name: Session

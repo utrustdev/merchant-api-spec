@@ -3,13 +3,13 @@ post:
     - Session
   summary: Generate a valid token for this session
   description: |
-    Use your credentials to generate a JWT that you will
-    need to perform any authenticated request on the API
+    Use your Utrust credentials to generate a JWT that you will
+    need to perform any authenticated request on the Merchants API.
   operationId: generateToken
+  security: []
   parameters:
     - in: body
       name: credentials
-      description: Your Utrust credentials
       schema:
         type: object
         properties:

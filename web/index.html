@@ -7,10 +7,7 @@
     <!-- needed for adaptive design -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700"
-      rel="stylesheet"
-    />
+    <link href="fonts.css" rel="stylesheet" />
 
     <!--
     ReDoc uses font options from the parent element
@@ -24,7 +21,8 @@
     </style>
   </head>
   <body>
-    <redoc spec-url="./swagger.json"> </redoc>
+    <div id="redoc-container"></div>
     <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"></script>
+    <script src="redoc.js"></script>
   </body>
 </html>
