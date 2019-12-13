@@ -79,7 +79,6 @@ tags:
 
       * `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed
       * `ORDER.PAYMENT.CANCELLED` - Triggered when the payment is cancelled
-      * `ORDER.PAYMENT.FAILED` - Triggered when the payment is failed
 
       #### Verifying events
 
