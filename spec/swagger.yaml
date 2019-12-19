@@ -131,7 +131,8 @@ tags:
 
       We will be excepting your response status to be:
       * If everything went well → status: **200 OK**; with no body or a valid JSON (e.g. `{ success: true }`);
-      * If something went wrong → status: **500 Internal Server Error**;
+      * If signature or body request is invalid → status: **400 Internal Server Error**;
+      * If something else went wrong → status: **500 Internal Server Error**;
 
 
       If our HTTP request to your system fails, we will retry it again, every minute, for 10 minutes.
