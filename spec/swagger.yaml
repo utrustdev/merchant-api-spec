@@ -71,9 +71,7 @@ tags:
       create a `ORDER.PAYMENT.RECEIVED` event.
 
       We communicate these events via a webhooks system, which are sent to the
-      URL you provide us as the callback URL for the order. We will retry to send
-      you the event for 10 times or until we get a response with a 200 status
-      code. If none of these happens, the event notification will be lost.
+      URL you provide us as the callback URL for the order. 
 
       List of events:
 
@@ -135,7 +133,9 @@ tags:
       * If something else went wrong → status: **500 Internal Server Error**;
 
 
-      If our HTTP request to your system fails, we will retry it again, every minute, for 10 minutes.
+      If our HTTP request to your system fails, we will retry 15 times with an exponential back off. It follows the 
+      Fibonacci sequence pattern, therefore, the last event will be 987 minutes after the first one (that's 16h27).
+
   - name: Session
   - name: Account
   - name: Order
