@@ -85,7 +85,7 @@ tags:
       every event with HMAC SHA256, using the client secret for your store as the
       signing key. You can then use the client id to verify it.
 
-      We order the payload for each event, so that we can guarantee it will
+      We sort the payload for each event, so that we can guarantee it will
       always be the same. To do this on your side you should first remove the
       signature field, and then recursively order each field alphabetically by
       its name. For example:
@@ -127,7 +127,7 @@ tags:
 
       #### Response and retries
 
-      We will be excepting your response status to be:
+      We will be expecting your response to our webhook to be:
       * If everything went well → status: **200 OK**; with no body or a valid JSON (e.g. `{ success: true }`);
       * If signature or body request is invalid → status: **400 Bad Request**;
       * If something else went wrong → status: **500 Internal Server Error**;
