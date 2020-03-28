@@ -1,4 +1,4 @@
-# Utrust Developers Page
+# Utrust API docs page
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/742864dc-19c5-4bd6-8909-37b3908e8891/deploy-status)](https://app.netlify.com/sites/vigorous-yalow-230554/deploys)
 
