@@ -120,7 +120,7 @@ tags:
       joined_payload =
       “event_typeORDER.PAYMENT.RECEIVEDresourceamount10.8200resourcecurrencyEURresourcereference1400012634statecompleted"
       signed_payload = :crypto.hmac(:sha256, secret, joined_payload)
-      signature = Base.encode16(signed_payload, case: :lower)
+      signature = Base.encode16(signed_payload, case: :lower) # This step might not be needed (e.g. on PHP and Ruby, the hmac function already returns a base16 value)
       ```
 
       You can see an example of the signature validation function in PHP [here.](https://github.com/utrustdev/utrust-php/blob/e400f219b73cced5b184f2f15eded3c8654dce3c/src/Webhook/Event.php#L75)
