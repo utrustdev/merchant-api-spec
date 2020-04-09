@@ -94,7 +94,7 @@ tags:
       payload = {
         "event_type":"ORDER.PAYMENT.RECEIVED",
         "resource":{
-          "reference":"1400012634"
+          "reference":"1400012634",
           "amount":"10.8200",
           "currency":"EUR",
         },
