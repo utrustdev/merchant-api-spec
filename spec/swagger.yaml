@@ -176,7 +176,7 @@ securityDefinitions:
       save it for later.
 
       For usage of the Stores API you will need to include the API key on every request in
-      an `Authorization` header with the following format `Bearer: <api-key>`
+      an `Authorization` header with the following format `Bearer <api-key>`
   Merchants_API_Authentication:
     type: apiKey
     in: header
@@ -185,7 +185,7 @@ securityDefinitions:
       For the Merchant API we use a JSON Web Tokens (JWT) authentication. We call our resource
       for generating JWT [Sessions](#tag/Session).
       The generated token can be used to Authenticate your Merchant API requests using the familiar 
-      `Authorization` header with `Bearer: <token>`
+      `Authorization` header with `Bearer <token>`
 security:
   - Merchants_API_Authentication: []
   - Stores_API_Authentication: []
