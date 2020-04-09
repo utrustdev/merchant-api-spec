@@ -96,7 +96,7 @@ tags:
         "resource":{
           "reference":"1400012634",
           "amount":"10.8200",
-          "currency":"EUR",
+          "currency":"EUR"
         },
         "signature":"5ef8a5994e917c14479b31f690d4d2a023dfcc6059081504e3087977b21580ab",
         "state":"completed"
