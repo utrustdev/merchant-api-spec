@@ -16,9 +16,6 @@ properties:
         discount: "2.00"
   return_urls:
     type: "object"
-    description: |
-      If not using the express checkout flow you can specify a URL
-      to redirect the user when the payment is done
     properties:
       return_url:
         type: "string"
@@ -27,12 +24,12 @@ properties:
         example: "http://example.com/return"
       cancel_url:
         type: "string"
-        description: "URL to redirect the user in case of something going wrong"
+        description: "URL to redirect the user in case of the order cancelled"
         format: "url"
         example: "http://example.com/cancel"
       callback_url:
         type: "string"
-        description: "URL to POST information to when the payment is confirmed"
+        description: "URL to POST notification about the Order final status (webhook)"
         format: "url"
         example: "http://example.com/callback"
     required:
