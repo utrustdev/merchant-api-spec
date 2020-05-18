@@ -12,22 +12,27 @@ properties:
     example: "john@example.com"
   address1:
     type: "string"
+    description: "Billing address"
     example: "118 Main St"
   address2:
     type: "string"
+    description: "Billing address 2"
     example: "7th Floor"
   city:
     type: "string"
+    description: "Billing city"
     example: "New York"
   state:
     type: "string"
+    description: "Billing state"
     example: "New York"
   postcode:
     type: "string"
+    description: "Billing postcode"
     example: "10001"
   country:
     type: "string"
-    description: "Format [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)"
+    description: "Billing country. Format [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)"
     example: "US"
 required:
   - "first_name"
