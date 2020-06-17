@@ -12,7 +12,6 @@ properties:
   currency:
     type: "string"
     example: "USD"
-    enum: ["EUR", "GBP", "USD"]
   quantity:
     type: "integer"
     minimum: 1
