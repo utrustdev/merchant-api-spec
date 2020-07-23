@@ -59,7 +59,7 @@ tags:
   - name: Webhooks
     description: |
       To sync with the progress of Order payment we use webhooks. To ensure that the webhooks are 
-      comming from Utrust and not some unauthorized third party we create a signature or EVERY request
+      comming from Utrust and not some unauthorized third party we create a signature for EVERY request
       the signature is included in the webhook payload and can be reconstructed for verification.
       You can use our [libraries](https://docs.utrust.com/#section/Libraries) for this or you code it 
       yourself manually.
