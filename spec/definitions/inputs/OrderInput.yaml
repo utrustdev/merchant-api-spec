@@ -7,7 +7,7 @@ properties:
     allOf:
       - $ref: "#/definitions/Amount"
     example:
-      total: "109.00"
+      total: "1090.00"
       currency: "USD"
       details:
         subtotal: "98.00"

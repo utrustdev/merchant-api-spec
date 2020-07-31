@@ -3,7 +3,9 @@ properties:
   total:
     type: "string"
     format: "decimal"
-    example: "40.00"
+    example: "1090.00"
+    description: |
+      Number format "1090.00" – no commas, only one dot
   currency:
     type: "string"
     example: "USD"
