@@ -71,10 +71,11 @@ tags:
       create a `ORDER.PAYMENT.RECEIVED` event.
 
       We communicate these events via a webhooks system, which are sent to the
-      URL you provide us as the callback URL for the order. 
+      URL you provide us as the `callback_url` for the order. 
 
       List of events:
 
+      * `ORDER.PAYMENT.DETECTED` - (Will be available at end of August 2020) Triggered when the payment is detected on the blockchain, this still needs to be confirmed to be completed
       * `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed
       * `ORDER.PAYMENT.CANCELLED` - Triggered when the payment is cancelled
 
@@ -82,8 +83,8 @@ tags:
 
       Since these events are sent from us to you, you might want to verify that
       they were not tampered with in the process. To allow for that, we sign
-      every event with HMAC SHA256, using the client secret for your store as the
-      signing key. You can then use the client id to verify it.
+      every event with HMAC SHA256, using the webhook secret as the
+      signing key. 
 
       We sort the payload for each event, so that we can guarantee it will
       always be the same. To do this on your side you should first remove the
@@ -135,6 +136,7 @@ tags:
 
       If our HTTP request to your system fails, we will retry 15 times with an exponential back off. It follows the 
       Fibonacci sequence pattern, therefore, the last event will be 987 minutes after the first one (that's 16h27).
+      After `ORDER.PAYMENT.RECEIVED` notification fail 15 times, we will send an email with the error messages. 
 
   - name: Session
   - name: Account
