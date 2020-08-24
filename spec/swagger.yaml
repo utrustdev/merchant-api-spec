@@ -75,7 +75,7 @@ tags:
 
       List of events:
 
-      * `ORDER.PAYMENT.DETECTED` - (Will be available at end of August 2020) Triggered when the payment is detected on the blockchain, this still needs to be confirmed to be completed
+      * `ORDER.PAYMENT.DETECTED` - Triggered when the payment is detected on the blockchain, this still needs to be confirmed to be completed
       * `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed
       * `ORDER.PAYMENT.CANCELLED` - Triggered when the payment is cancelled
 
