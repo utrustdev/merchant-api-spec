@@ -58,11 +58,13 @@ post:
                 properties:
                   amount:
                     type: string
+                    example: "10.90"
                   currency:
                     type: string
                     example: USD
                   reason:
                     type: string
+                    example: "Shirt size did not fit"
                 required:
                   - amount
                   - currency
