@@ -1,0 +1,30 @@
+get:
+  tags:
+    - Store Order
+  summary: Show order details
+  operationId: showOrderDetails
+  security:
+    - Stores_API_Authentication: []
+  parameters:
+    - in: path
+      name: order_id
+      type: string
+      format: UUID
+      required: true
+    - in: query
+      name: include
+      type: string
+      enum:
+        - payments
+  responses:
+    "200":
+      description: Order details
+      schema:
+        type: object
+        properties:
+          data:
+            $ref: "#/definitions/Order"
+    "404":
+      description: Order not found
+      schema:
+        $ref: "#/definitions/Error"
