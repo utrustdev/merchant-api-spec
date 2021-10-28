@@ -75,7 +75,7 @@ tags:
 
       List of events:
 
-      * `ORDER.PAYMENT.DETECTED` - Triggered when the payment is detected on the blockchain, this still needs to be confirmed to be completed
+      * `ORDER.PAYMENT.DETECTED` - Triggered when the payment is detected on the blockchain, **it doesn't happen always**, the payment can go straight to the confirmation. Bear in mind also that this event is not a payment confirmation, it still needs to be processed by Utrust
       * `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed
       * `ORDER.PAYMENT.CANCELLED` - Triggered when the payment is cancelled
 
