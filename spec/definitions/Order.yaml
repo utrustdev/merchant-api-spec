@@ -28,4 +28,5 @@ properties:
         type: "array"
         items:
           $ref: "#/definitions/LineItem"
+        deprecated: true
 

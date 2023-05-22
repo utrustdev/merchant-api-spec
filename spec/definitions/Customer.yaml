@@ -5,9 +5,11 @@ properties:
     example: "John Doe"
   first_name:
     type: "string"
+    deprecated: true
     example: ""
   last_name:
     type: "string"
+    deprecated: true
     example: ""
   email:
     type: "string"
@@ -20,10 +22,12 @@ properties:
   address1:
     type: "string"
     description: "Billing address"
+    deprecated: true
     example: ""
   address2:
     type: "string"
     description: "Billing address 2"
+    deprecated: true
     example: ""
   city:
     type: "string"
@@ -40,6 +44,7 @@ properties:
   postcode:
     type: "string"
     description: "Billing postcode"
+    deprecated: true
     example: "" 
   country:
     type: "string"
