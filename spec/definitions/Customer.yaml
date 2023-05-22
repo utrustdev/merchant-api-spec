@@ -1,23 +1,30 @@
 type: "object"
 properties:
+  name:
+    type: "string"
+    example: "John Doe"
   first_name:
     type: "string"
-    example: "John"
+    example: ""
   last_name:
     type: "string"
-    example: "Doe"
+    example: ""
   email:
     type: "string"
     format: "email"
     example: "john@example.com"
-  address1:
+  billing_address:
     type: "string"
     description: "Billing address"
     example: "118 Main St"
+  address1:
+    type: "string"
+    description: "Billing address"
+    example: ""
   address2:
     type: "string"
     description: "Billing address 2"
-    example: "7th Floor"
+    example: ""
   city:
     type: "string"
     description: "Billing city"
@@ -26,16 +33,19 @@ properties:
     type: "string"
     description: "Billing state"
     example: "New York"
-  postcode:
+  post_code:
     type: "string"
     description: "Billing postcode"
     example: "10001"
+  postcode:
+    type: "string"
+    description: "Billing postcode"
+    example: "" 
   country:
     type: "string"
     description: "Billing country. Format [ISO 3166-1 Alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)"
     example: "US"
 required:
-  - "first_name"
-  - "last_name"
+  - "name"
   - "email"
   - "country"
