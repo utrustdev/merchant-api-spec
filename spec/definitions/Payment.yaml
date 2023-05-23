@@ -26,7 +26,7 @@ properties:
         properties:
           payment_method:
             type: "string"
-            enum: ["utrust", "blockchain"]
+            enum: ["xmoney", "blockchain"]
       total_amount:
         allOf:
           - $ref: "#/definitions/Currency"

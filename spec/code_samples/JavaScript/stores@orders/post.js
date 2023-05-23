@@ -1,5 +1,5 @@
 // configs
-  const API_ROOT = "https://merchants.api.utrust.com/api/stores/orders" // OR "https://merchants.api.sandbox-utrust.com/api/stores/orders" (for sandbox)
+  const API_ROOT = "https://merchants.api.crypto.xmoney.com/api/stores/orders" // OR "https://merchants.api.sandbox.crypto.xmoney.com/api/stores/orders" (for sandbox)
   const API_KEY = // Add your API_KEY here OR fetch it from environment variables;
 
   // order params
@@ -25,8 +25,8 @@
       },
   }
 
-  // utrust api
-  const utrustApi = {
+  // xmoney api
+  const xMoneyApi = {
       createOrder: (params, token) =>
           fetch(API_ROOT + "/stores/orders/", {
               method: "POST",
@@ -38,6 +38,6 @@
           }).then(response => response.json()),
   }
 
-  utrustApi
+  xMoneyApi
   .createOrder(orderParams)
   .then(response => response.data.attributes.redirect_url)
