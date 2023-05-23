@@ -36,10 +36,10 @@ properties:
       - "return_url"
   line_items:
     type: "array"
+    deprecated: true
     items:
       $ref: "#/definitions/LineItem"
 required:
   - "reference"
   - "amount"
   - "return_urls"
-  - "line_items"

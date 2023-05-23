@@ -15,14 +15,7 @@
                   },
                   return_urls: {
                       return_url: "http://example.com/success",
-                  },
-                  line_items: [{
-                      sku: "item-unique-id",
-                      name: "Donation",
-                      price: "10.00",
-                      currency: "EUR",
-                      quantity: 1
-                  }]
+                  }
               },
               customer: {
                   email: 'customer@example.com',
