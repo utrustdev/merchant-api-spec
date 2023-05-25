@@ -10,7 +10,7 @@ x-servers:
     description: Sandbox server (test)
 info:
   x-logo:
-    url: "https://user-images.githubusercontent.com/1558992/70794685-228a2480-1d96-11ea-8198-1569bf0c872e.png"
+    url: "api_logo.png"
     backgroundColor: "#FAFAFA"
   title: xMoney API
   version: 1.1.0
