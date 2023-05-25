@@ -1,18 +1,18 @@
 swagger: "2.0"
 schemes:
   - https
-host: merchants.api.utrust.com/
+host: merchants.api.crypto.xmoney.com/
 basePath: api/
 x-servers:
-  - url: https://merchants.api.utrust.com/api/
+  - url: https://merchants.api.crypto.xmoney.com/api/
     description: Production server (live)
-  - url: https://merchants.api.sandbox-utrust.com/api/
+  - url: https://merchants.api.sandbox.crypto.xmoney.com/api/
     description: Sandbox server (test)
 info:
   x-logo:
-    url: "https://user-images.githubusercontent.com/1558992/70794685-228a2480-1d96-11ea-8198-1569bf0c872e.png"
+    url: "api_logo.png"
     backgroundColor: "#FAFAFA"
-  title: Utrust API
+  title: xMoney API
   version: 1.1.0
   contact:
     email: integrations@utrust.com
@@ -20,7 +20,7 @@ info:
     name: Apache 2.0
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
   description: |
-    The Utrust API is organized around
+    The xMoney API is organized around
     [REST](https://en.wikipedia.org/wiki/Representational_state_transfer),
     particularly using the [JSON:API spec](https://jsonapi.org/). Our API has
     resource-oriented URLs, returns JSON responses and uses standard HTTP
@@ -28,7 +28,7 @@ info:
 
     # Introduction
 
-    The Utrust API is divided into two separate use cases.  
+    The xMoney API is divided into two separate use cases.  
 
     The [Stores API](#tag/Store-Order) which uses an API Key as authentication and provides
     endpoints to be used by plugins or other integrations with your store.
@@ -59,9 +59,9 @@ tags:
   - name: Webhooks
     description: |
       To sync with the progress of Order payment we use webhooks. To ensure that the webhooks are 
-      comming from Utrust and not some unauthorized third party we create a signature for EVERY request
+      comming from xMoney and not some unauthorized third party we create a signature for EVERY request
       the signature is included in the webhook payload and can be reconstructed for verification.
-      You can use our [libraries](https://docs.utrust.com/#section/Libraries) for this or you code it 
+      You can use our [libraries](https://docs.crypto.xmoney.com/#section/Libraries) for this or you code it 
       yourself manually.
 
       ### Events
@@ -75,7 +75,7 @@ tags:
 
       List of events:
 
-      * `ORDER.PAYMENT.DETECTED` - Triggered when the payment is detected on the blockchain, **it doesn't happen always**, the payment can go straight to the confirmation. Bear in mind also that this event is not a payment confirmation, it still needs to be processed by Utrust
+      * `ORDER.PAYMENT.DETECTED` - Triggered when the payment is detected on the blockchain, **it doesn't happen always**, the payment can go straight to the confirmation. Bear in mind also that this event is not a payment confirmation, it still needs to be processed by xMoney
       * `ORDER.PAYMENT.RECEIVED` - Triggered when the payment is confirmed
       * `ORDER.PAYMENT.CANCELLED` - Triggered when the payment is cancelled
 
@@ -170,7 +170,7 @@ securityDefinitions:
     name: "Authorization: Bearer <api-key>"
     description: |
       To generate the API key for the authentication of requests, head to the Merchant Dashboard 
-      ([sandbox](https://merchants.sandbox-utrust.com) or [production](https://merchants.utrust.com)) and in the
+      ([sandbox](https://merchants.sandbox.crypto.xmoney.com) or [production](https://merchants.crypto.xmoney.com)) and in the
       Organizations tab view and generate your keys.
       The generated key will have a `u_live` or `u_test` prefix in order to be distinguished between 
       our sandbox and production environments, respectively.

@@ -1,7 +1,7 @@
 {
   "generator-openapi-repo": {
     "importExistingSpec": false,
-    "name": "UTRUST Merchant",
+    "name": "xMoney Merchant",
     "repo": "utrustdev/merchant-api-spec",
     "splitSpec": true,
     "samples": true,

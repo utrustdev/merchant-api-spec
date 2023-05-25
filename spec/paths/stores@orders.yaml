@@ -54,4 +54,4 @@ post:
                   redirect_url:
                     type: string
                     format: URL
-                    example: "https://pay.utrust.com?uuid=some-uuid"
+                    example: "https://bill.crypto.xmoney.com/uuid"

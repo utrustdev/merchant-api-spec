@@ -1,4 +1,4 @@
-# Utrust API docs page
+# xMoney API docs page
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/742864dc-19c5-4bd6-8909-37b3908e8891/deploy-status)](https://app.netlify.com/sites/vigorous-yalow-230554/deploys)
 
@@ -21,4 +21,4 @@ Bundles the spec and prepares `docs` folder with static assets.
 
 ### Deploy
 
-The project is hosted on Netlify, deploys are automatic to `https://docs.api.utrust.com` when merged to `master`.
+The project is hosted on Netlify, deploys are automatic to `https://docs.api.crypto.xmoney.com` when merged to `master`.

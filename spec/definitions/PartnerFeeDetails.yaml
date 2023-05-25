@@ -2,8 +2,8 @@ type: "object"
 properties:
   receiver:
     type: "string"
-    enum: ["utrust"]
-    example: "utrust"
+    enum: ["xmoney"]
+    example: "xmoney"
   amount:
     type: "object"
     properties:
