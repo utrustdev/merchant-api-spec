@@ -37,14 +37,9 @@ properties:
     type: "string"
     description: "Billing state"
     example: "New York"
-  post_code:
-    type: "string"
-    description: "Billing postcode"
-    example: "10001"
   postcode:
     type: "string"
     description: "Billing postcode"
-    deprecated: true
     example: "" 
   country:
     type: "string"
