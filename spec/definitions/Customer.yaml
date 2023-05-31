@@ -3,13 +3,12 @@ properties:
   name:
     type: "string"
     example: "John Doe"
+    description: "Name (first_name + last_name) - only for get endpoint"
   first_name:
     type: "string"
-    deprecated: true
     example: ""
   last_name:
     type: "string"
-    deprecated: true
     example: ""
   email:
     type: "string"
@@ -17,17 +16,15 @@ properties:
     example: "john@example.com"
   billing_address:
     type: "string"
-    description: "Billing address"
+    description: "Billing address (address1 + address2) - only for get endpoint"
     example: "118 Main St"
   address1:
     type: "string"
-    description: "Billing address"
-    deprecated: true
+    description: "Billing address 1"
     example: ""
   address2:
     type: "string"
     description: "Billing address 2"
-    deprecated: true
     example: ""
   city:
     type: "string"
