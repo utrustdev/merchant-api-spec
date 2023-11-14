@@ -30,8 +30,7 @@ post:
   description: >-
     As a merchant you can only propose refunds, it's ultimately the buyer's
     decision to either accept or reject it (within a reasonable timeframe).
-    There can only be one active proposal at any given time, if you create a
-    proposal and there was already one, the new one will take it's place.
+    There can only be one refund proposed per payment.For payments older than 3 months, refund is not allowed.
   operationId: createPaymentRefundProposal
   security:
     - Merchants_API_Authentication: []
@@ -49,25 +48,18 @@ post:
                 type: string
                 enum:
                   - refunds
-              id:
-                description: Refund id
-                allOf:
-                  - $ref: "#/definitions/UUID"
               attributes:
                 type: object
                 properties:
                   amount:
                     type: string
                     example: "10.90"
-                  currency:
-                    type: string
-                    example: USD
                   reason:
                     type: string
                     example: "Shirt size did not fit"
                 required:
                   - amount
-                  - currency
+                  
   responses:
     "200":
       description: Refund details
@@ -80,3 +72,9 @@ post:
       description: Refund not found
       schema:
         $ref: "#/definitions/Error"
+
+    "401":
+      description: Refund not Allowed
+      schema:
+        $ref: "#/definitions/Error"
+
