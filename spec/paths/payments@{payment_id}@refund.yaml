@@ -72,3 +72,9 @@ post:
       description: Refund not found
       schema:
         $ref: "#/definitions/Error"
+
+    "401":
+      description: Refund not Allowed
+      schema:
+        $ref: "#/definitions/Error"
+
