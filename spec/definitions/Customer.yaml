@@ -1,27 +1,19 @@
 type: "object"
 properties:
-  name:
-    type: "string"
-    example: "John Doe"
-    description: "Name (first_name + last_name) - only for get endpoint"
   first_name:
     type: "string"
-    example: ""
+    example: "John"
   last_name:
     type: "string"
-    example: ""
+    example: "Doe"
   email:
     type: "string"
     format: "email"
     example: "john@example.com"
-  billing_address:
-    type: "string"
-    description: "Billing address (address1 + address2) - only for get endpoint"
-    example: "118 Main St"
   address1:
     type: "string"
     description: "Billing address 1"
-    example: ""
+    example: "118 Main St"
   address2:
     type: "string"
     description: "Billing address 2"
